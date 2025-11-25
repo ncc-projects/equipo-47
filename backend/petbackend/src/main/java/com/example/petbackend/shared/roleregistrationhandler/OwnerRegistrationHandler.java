@@ -2,8 +2,8 @@ package com.example.petbackend.shared.roleregistrationhandler;
 
 import com.example.petbackend.features.owner.model.Owner;
 import com.example.petbackend.features.owner.repository.IOwnerRepository;
-import com.example.petbackend.features.role.model.RolesEnum;
 import com.example.petbackend.features.user.dto.UserRegisterRequestDTO;
+import com.example.petbackend.features.user.model.RolesEnumUserRegister;
 import com.example.petbackend.features.user.model.User;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +22,7 @@ public class OwnerRegistrationHandler implements IRoleRegistrationHandler {
     }
 
     @Override
-    public RolesEnum supports() {
-        return RolesEnum.OWNER;
+    public RolesEnumUserRegister supports() {
+        return RolesEnumUserRegister.OWNER;
     }
 }

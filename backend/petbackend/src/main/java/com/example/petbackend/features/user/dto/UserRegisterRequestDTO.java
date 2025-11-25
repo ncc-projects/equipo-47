@@ -1,6 +1,6 @@
 package com.example.petbackend.features.user.dto;
 
-import com.example.petbackend.features.role.model.RolesEnum;
+import com.example.petbackend.features.user.model.RolesEnumUserRegister;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 
@@ -23,6 +23,6 @@ public record UserRegisterRequestDTO(
         String password,
 
         @NotEmpty
-        Set<RolesEnum> roles
+        Set<RolesEnumUserRegister> roles
 ) {
 }

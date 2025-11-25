@@ -9,6 +9,7 @@ import com.example.petbackend.features.role.repository.IRoleRepository;
 import com.example.petbackend.features.user.dto.RegisteredUserResponseDTO;
 import com.example.petbackend.features.user.dto.UserRegisterRequestDTO;
 import com.example.petbackend.features.user.dto.UserResponseDTO;
+import com.example.petbackend.features.user.model.RolesEnumUserRegister;
 import com.example.petbackend.features.user.model.User;
 import com.example.petbackend.features.user.repository.IUserRepository;
 import com.example.petbackend.shared.roleregistrationhandler.IRoleRegistrationHandler;
@@ -48,7 +49,7 @@ public class UserService implements IUserService {
         String token = tokenService.generateToken(userResponse);
 
         // Delegar manejo de roles a sus handlers
-        for (RolesEnum role : userDto.roles()) {
+        for (RolesEnumUserRegister role : userDto.roles()) {
             roleHandlers.stream()
                     .filter(handler -> handler.supports() == role)
                     .findFirst()
@@ -74,7 +75,7 @@ public class UserService implements IUserService {
     }
 
     private void assignDefaultRole(User user) {
-        Role role = roleRepository.findByName(RolesEnum.USER)
+        Role role = roleRepository.findByName(RolesEnum.OWNER)
                 .orElseThrow(() -> new NotFoundException("Rol USER no encontrado"));
         user.getRoles().add(role);
     }
