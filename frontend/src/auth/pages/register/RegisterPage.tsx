@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from './schema/registerSchema';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 import { useRegisterUser } from './hooks/useRegisterUser';
+import { Header } from '@/components/Header';
 
 export const RegisterPage = () => {
   const {
@@ -22,14 +23,12 @@ export const RegisterPage = () => {
 
   return (
     <section className='w-full max-w-md flex flex-col gap-4 justify-center'>
-      <header className='flex flex-col justify-center items-center mb-5'>
-        <img
-          src='/src/assets/pets.png'
-          alt='pets'
-          className='w-37 h-37 object-cover'
-        />
-        <h1 className='font-medium text-xl'>Empezamos?</h1>
-      </header>
+      <Header
+        img='/src/assets/pets.png'
+        title='Empezamos?'
+        titleClass='font-medium text-xl'
+        imgClass='w-37 h-37'
+      />
       <form onSubmit={handleSubmit(onSubmit)} className='flex items-center'>
         <fieldset className='flex flex-col w-full gap-8 *:w-full *:relative'>
           <label htmlFor='fullName'>

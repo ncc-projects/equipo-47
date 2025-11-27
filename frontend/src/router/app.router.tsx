@@ -3,6 +3,7 @@ import { lazy } from 'react';
 import { LoginPage } from '../auth/pages/login/LoginPage';
 import { RegisterPage } from '../auth/pages/register/RegisterPage';
 import { HomePage } from '../pet-health-tracker/pages/home/HomePage';
+import { ProfilePage } from '@/pet-health-tracker/pages/profile/ProfilePage';
 
 const PetHealthTrackerLayout = lazy(
   () => import('../pet-health-tracker/layouts/PetHealthTrackerLayout')
@@ -17,6 +18,10 @@ export const appRouter = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+      },
+      {
+        path: '/perfil/:petId',
+        element: <ProfilePage />,
       },
     ],
   },

@@ -2,10 +2,9 @@ import { Outlet } from 'react-router';
 
 const PetHealthTrackerLayout = () => {
   return (
-    <>
-      <h1 className='text-2xl font-bold'>Pet Health Tracker</h1>
+    <main className='min-h-svh flex items-center justify-center p-6 bg-background'>
       <Outlet />
-    </>
+    </main>
   );
 };
 

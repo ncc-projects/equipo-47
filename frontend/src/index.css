@@ -1,7 +1,122 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueUltraLight.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueUltraLightItalic.otf')
+    format('opentype');
+  font-weight: 100;
+  font-style: italic;
+}
+
+/* --- 200: Thin (font-extralight) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueThin.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueThinItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+/* --- 300: Light (font-light) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueLight.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueLightItalic.otf') format('opentype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* --- 400: Regular / Roman (font-normal) --- */
+/* Usamos la versión Roman OTF como principal por calidad */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueRoman.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+/* Usamos el TTF para la cursiva normal, ya que es el único que tienes para este peso */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueItalic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* --- 500: Medium (font-medium) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueMedium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueMediumItalic.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* --- 700: Bold (font-bold) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueBold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueBoldItalic.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+/* --- 800: Heavy (font-extrabold) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueHeavy.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueHeavyItalic.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+}
+
+/* --- 900: Black (font-black) --- */
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueBlack.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Helvetica Neue Project';
+  src: url('./assets/fonts/HelveticaNeueBlackItalic.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+}
+
 @theme {
-  --font-sans: 'Helvetica Neue', 'Arial', sans-serif;
+  --font-sans: 'Helvetica Neue Project', 'Helvetica Neue', 'Arial', sans-serif;
   --color-primary: #97dfcb;
   --color-secondary: #ffa96c;
+  --color-background: #fbf2e8;
 }
