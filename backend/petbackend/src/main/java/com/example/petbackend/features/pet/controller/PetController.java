@@ -20,7 +20,7 @@ public class PetController {
 
     private final PetService petService;
 
-    @PreAuthorize("hasRole('OWNER')")
+
     @PostMapping
     public ResponseEntity<PetDTO> createPet(
             @Valid @RequestBody PetDTO petDTO,
@@ -31,7 +31,8 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PetDTO>> getPets(@AuthenticationPrincipal User currentUser) {
+    public ResponseEntity<List<PetDTO>> getPets(
+            @AuthenticationPrincipal User currentUser) {
         List<PetDTO> pets = petService.getPetsByOwner(currentUser);
         return ResponseEntity.ok(pets);
     }
