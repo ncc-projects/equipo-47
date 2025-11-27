@@ -40,11 +40,11 @@ public class PetService {
     public PetDTO getPetById(Long id, User owner) {
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Mascota no encontrada con id: " + id));
-        
-        if (!pet.getOwner().equals(owner)) {
+
+        if (!pet.getOwner().getId().equals(owner.getId())) {
             throw new UnauthorizedException("No estás autorizado a acceder a esta mascota.");
         }
-        
+
         return convertToDTO(pet);
     }
 
@@ -53,9 +53,10 @@ public class PetService {
         Pet existingPet = petRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Mascota no encontrada con id " + id));
 
-        if (!existingPet.getOwner().equals(owner)) {
+        if (!existingPet.getOwner().getId().equals(owner.getId())) {
             throw new UnauthorizedException("No estás autorizado a acceder a esta mascota.");
         }
+
         petMapper.updatePetFromDTO(petDTO, existingPet);
 
         Pet savedPet = petRepository.save(existingPet);
