@@ -36,12 +36,13 @@ public class SecurityConfigurations {
         http.csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint(customAuthEntryPoint)   // <--- 🔥 AQUÍ
+                        .authenticationEntryPoint(customAuthEntryPoint)
                 )
                 .authorizeHttpRequests(req -> req
                         .requestMatchers(HttpMethod.POST, "/api/v1/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
                         .requestMatchers("/api/pets/**").permitAll()
+                        .requestMatchers("/api/v1/vaccine-types").permitAll()
                         .requestMatchers(
                                 "/swagger-ui/",
                                 "/swagger-ui/**",
