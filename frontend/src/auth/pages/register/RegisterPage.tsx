@@ -1,25 +1,53 @@
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import type { Register } from './interfaces/register.interface';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema } from './schema/registerSchema';
-import { FaFacebook, FaGoogle } from 'react-icons/fa';
-import { useRegisterUser } from './hooks/useRegisterUser';
+import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from 'react-icons/fa';
 import { Header } from '@/components/Header';
+import { useState } from 'react';
+import { useAuthStore } from '@/auth/store/auth.store';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 export const RegisterPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const registerUser = useAuthStore((state) => state.register);
+  const navigate = useNavigate();
+
   const {
     handleSubmit,
     register,
+    control,
     formState: { errors },
   } = useForm<Register>({
     resolver: zodResolver(registerSchema),
   });
 
-  const { mutate } = useRegisterUser();
+  const onSubmit = async (formData: Register) => {
+    setIsLoading(true);
+    const isValid = await registerUser(formData);
 
-  const onSubmit = (formData: Register) => {
-    mutate(formData);
+    if (isValid) {
+      navigate('/');
+      return;
+    }
+
+    toast.error('No se pudo crear un usuario con estos datos');
+
+    setIsLoading(false);
   };
+
+  const passwordValue = useWatch({
+    control,
+    name: 'password',
+  });
+
+  const confirmPasswordValue = useWatch({
+    control,
+    name: 'confirmPassword',
+  });
 
   return (
     <section className='w-full max-w-md flex flex-col gap-4 justify-center'>
@@ -30,86 +58,188 @@ export const RegisterPage = () => {
         imgClass='w-37 h-37'
       />
       <form onSubmit={handleSubmit(onSubmit)} className='flex items-center'>
-        <fieldset className='flex flex-col w-full gap-8 *:w-full *:relative'>
-          <label htmlFor='fullName'>
-            <span className='absolute -top-2.5 left-5 bg-white px-1.5 text-xs'>
-              Nombre Completo
-            </span>
-            <input
-              type='text'
-              id='fullName'
-              className='border-2 border-primary rounded-lg w-full h-12 p-4 text-xs'
-              placeholder='Juana Molina'
-              {...register('fullName', { required: true })}
-            />
-            {errors && (
+        <div className='flex flex-col w-full gap-6'>
+          <div>
+            <fieldset
+              className={`border-2 rounded-lg w-full transition-colors ${
+                errors.fullName
+                  ? 'border-red-500'
+                  : 'border-primary focus-within:border-primary'
+              }`}
+            >
+              <legend className='ml-3 px-1.5 text-xs'>Nombre Completo</legend>
+              <input
+                type='text'
+                id='fullName'
+                className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
+                placeholder='Juana Molina'
+                {...register('fullName', { required: true })}
+              />
+            </fieldset>
+
+            {errors.fullName && (
               <span className='text-red-500 text-sm'>
                 {errors.fullName?.message}
               </span>
             )}
-          </label>
-          <label htmlFor='email'>
-            <span className='absolute -top-2.5 left-5 bg-white px-1.5 text-xs'>
-              Correo electrónico
-            </span>
-            <input
-              type='email'
-              id='email'
-              placeholder='email@gmail.com'
-              autoComplete='username'
-              className='border-2 border-primary rounded-lg w-full h-12 p-4 text-xs'
-              {...register('email')}
-            />
-            {errors && (
+          </div>
+
+          <div>
+            <fieldset
+              className={`border-2 rounded-lg w-full transition-colors ${
+                errors.email
+                  ? 'border-red-500'
+                  : 'border-primary focus-within:border-primary'
+              }`}
+            >
+              <legend className='ml-3 px-1.5 text-xs'>
+                Correo electrónico
+              </legend>
+              <input
+                type='email'
+                id='email'
+                placeholder='email@gmail.com'
+                autoComplete='username'
+                className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
+                {...register('email', { required: true })}
+              />
+            </fieldset>
+
+            {errors.email && (
               <span className='text-red-500 text-sm'>
                 {errors.email?.message}
               </span>
             )}
-          </label>
-          <label htmlFor='password'>
-            <span className='absolute -top-2.5 left-5 bg-white px-1.5 text-xs'>
-              Contraseña
-            </span>
-            <input
-              type='password'
-              id='password'
-              placeholder='***********'
-              autoComplete='new-password'
-              className='border-2 border-primary rounded-lg w-full h-12 p-4 text-xs'
-              {...register('password')}
-            />
-            {errors && (
-              <span className='text-red-500 text-sm'>
-                {errors.password?.message}
-              </span>
+          </div>
+          <div className='relative'>
+            <fieldset
+              className={`border-2 rounded-lg w-full transition-colors ${
+                errors.password
+                  ? 'border-red-500'
+                  : 'border-primary focus-within:border-primary'
+              }`}
+            >
+              <legend className='ml-3 px-1.5 text-xs'>Contraseña</legend>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id='password'
+                placeholder='***********'
+                autoComplete='new-password'
+                className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
+                {...register('password', { required: true })}
+              />
+              {passwordValue?.length > 0 && (
+                <button
+                  type='button'
+                  onClick={() => setShowPassword(!showPassword)}
+                  className='cursor-pointer absolute top-4 right-3 focus:outline-none py-2'
+                  tabIndex={-1}
+                  aria-label={
+                    showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'
+                  }
+                >
+                  {showPassword ? (
+                    <FaEye size={18} strokeWidth={1.75} />
+                  ) : (
+                    <FaEyeSlash size={18} strokeWidth={1.75} />
+                  )}
+                </button>
+              )}
+            </fieldset>
+            {passwordValue && (
+              <ul className='text-xs mt-1 text-muted-foreground'>
+                <li
+                  className={
+                    passwordValue.length >= 8
+                      ? 'text-green-500'
+                      : 'text-red-500'
+                  }
+                >
+                  • Mínimo 8 caracteres
+                </li>
+                <li
+                  className={
+                    /[A-Z]/.test(passwordValue)
+                      ? 'text-green-500'
+                      : 'text-red-500'
+                  }
+                >
+                  • Una mayúscula
+                </li>
+                <li
+                  className={
+                    /\d/.test(passwordValue) ? 'text-green-500' : 'text-red-500'
+                  }
+                >
+                  • Un número
+                </li>
+                <li
+                  className={
+                    /[^A-Za-z0-9]/.test(passwordValue)
+                      ? 'text-green-500'
+                      : 'text-red-500'
+                  }
+                >
+                  • Al menos un carácter especial (por ejemplo: ! @ # $ % ^ & *)
+                </li>
+              </ul>
             )}
-          </label>
-          <label htmlFor='confirm-password'>
-            <span className='absolute -top-2.5 left-5 bg-white px-1.5 text-xs'>
-              Confirmar Contraseña
-            </span>
-            <input
-              type='password'
-              id='confirm-password'
-              placeholder='***********'
-              autoComplete='new-password'
-              className='border-2 border-primary rounded-lg w-full h-12 p-4 text-xs'
-              {...register('confirmPassword')}
-            />
-            {errors && (
+          </div>
+          <div className='relative'>
+            <fieldset
+              className={`border-2 rounded-lg w-full transition-colors ${
+                errors.confirmPassword
+                  ? 'border-red-500'
+                  : 'border-primary focus-within:border-primary'
+              }`}
+            >
+              <legend className='ml-3 px-1.5 text-xs'>
+                Confirmar Contraseña
+              </legend>
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id='confirm-password'
+                placeholder='***********'
+                autoComplete='new-password'
+                className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
+                {...register('confirmPassword', { required: true })}
+              />
+            </fieldset>
+            {confirmPasswordValue?.length > 0 && (
+              <button
+                type='button'
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className='cursor-pointer absolute top-4 right-3 focus:outline-none py-2'
+                tabIndex={-1}
+                aria-label={
+                  showConfirmPassword
+                    ? 'Ocultar contraseña'
+                    : 'Mostrar contraseña'
+                }
+              >
+                {showConfirmPassword ? (
+                  <FaEye size={18} strokeWidth={1.75} />
+                ) : (
+                  <FaEyeSlash size={18} strokeWidth={1.75} />
+                )}
+              </button>
+            )}
+
+            {errors.confirmPassword && (
               <span className='text-red-500 text-sm'>
                 {errors.confirmPassword?.message}
               </span>
             )}
-          </label>
+          </div>
 
           <button
             type='submit'
             className='bg-primary h-13 rounded-lg text-xl font-medium'
+            disabled={isLoading}
           >
             Crear Cuenta
           </button>
-        </fieldset>
+        </div>
       </form>
       <section className='flex justify-center items-center w-full'>
         <hr className='flex-1 mx-4 text-gray-300 border' />
