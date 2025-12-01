@@ -67,6 +67,14 @@ public class UserService implements IUserService {
         return null;
     }
 
+    @Override
+    public RegisteredUserResponseDTO checkStatus(Long userId) {
+        User userDb = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("Usuario no encontrado"));
+        String token = tokenService.generateToken(userDb);
+        return new RegisteredUserResponseDTO(userDb, token);
+    }
+
     private void validateUserUniqueness(UserRegisterRequestDTO userDto) {
         if (userRepository.existsByEmail(userDto.email())) {
             throw new DuplicateResourceException("El correo electrónico ya existe");
