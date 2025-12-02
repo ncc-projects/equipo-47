@@ -9,5 +9,11 @@ import java.util.List;
 public interface IVaccineEventService {
     VaccineEventResponseDTO createEvent(VaccineEventRegisterDTO vEventRegisterDto, Long userId);
 
-    List<VaccineEventResponseDTO> getReminders(LocalDate startDate, Boolean hasReminder);
+    List<VaccineEventResponseDTO> getReminders(
+            Long petId,
+            Long userId,
+            LocalDate scheduledDate,
+            LocalDate appliedDate,
+            Boolean hasReminder
+    );
 }
