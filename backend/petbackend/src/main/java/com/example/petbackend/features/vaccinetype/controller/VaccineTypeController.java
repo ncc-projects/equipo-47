@@ -12,10 +12,9 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Tipo de vacuna", description = "Operaciones relacionadas con los tipos de vacunas")
 @RestController
@@ -44,5 +43,17 @@ public class VaccineTypeController {
                 vaccineTypeResponseDTO
         );
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @Operation(
+            summary = "Mostrar todos los tipos de vacuna",
+            description = "Retorna un arreglo de tipos de vacuna",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Listado de tipos de vacuna"),
+            }
+    )
+    @GetMapping
+    public List<VaccineTypeResponseDTO> findAll() {
+        return vaccineTypeService.findAll();
     }
 }

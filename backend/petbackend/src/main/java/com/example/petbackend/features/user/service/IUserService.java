@@ -14,4 +14,6 @@ public interface IUserService {
     void deleteUser(Long id);
 
     UserResponseDTO findByUserId(Long id);
+
+    RegisteredUserResponseDTO checkStatus(Long userId);
 }
