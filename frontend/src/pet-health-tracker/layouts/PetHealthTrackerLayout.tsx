@@ -1,9 +1,11 @@
 import { Outlet } from 'react-router';
+import { Footer } from '../components/footer/Footer';
 
 const PetHealthTrackerLayout = () => {
   return (
-    <main className='min-h-svh flex items-center justify-center p-6 bg-background'>
+    <main className='min-h-svh grid grid-rows-[1fr_auto] bg-background'>
       <Outlet />
+      <Footer />
     </main>
   );
 };
