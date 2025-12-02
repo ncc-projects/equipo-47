@@ -117,6 +117,7 @@
 @theme {
   --font-sans: 'Helvetica Neue Project', 'Helvetica Neue', 'Arial', sans-serif;
   --color-primary: #97dfcb;
+  --color-footer: #d2f2e8;
   --color-secondary: #ffa96c;
   --color-background: #fbf2e8;
 }
