@@ -4,7 +4,7 @@ import { Header } from '@/components/Header';
 import type { Login } from './interfaces/login.interface';
 import { loginSchema } from './schemas/loginSchema';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast } from 'sonner';
@@ -152,9 +152,9 @@ export const LoginPage = () => {
         <hr className='mx-4 text-gray-300 border' />
         <section className='flex justify-center items-center w-full'>
           <h3 className='text-center text-xl'>No tienes cuenta?</h3>&nbsp;
-          <a className='text-center text-xl font-bold' href='#'>
+          <Link className='text-center text-xl font-bold' to='/auth/register'>
             Crear cuenta
-          </a>
+          </Link>
         </section>
       </section>
     </section>

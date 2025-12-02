@@ -4,6 +4,10 @@ import { LoginPage } from '../auth/pages/login/LoginPage';
 import { RegisterPage } from '../auth/pages/register/RegisterPage';
 import { HomePage } from '../pet-health-tracker/pages/home/HomePage';
 import { ProfilePage } from '@/pet-health-tracker/pages/profile/ProfilePage';
+import {
+  NotAuthenticatedRoute,
+  OwnerRoute,
+} from '@/components/routes/ProtectedRoutes';
 
 const PetHealthTrackerLayout = lazy(
   () => import('../pet-health-tracker/layouts/PetHealthTrackerLayout')
@@ -13,7 +17,11 @@ const AuthLayout = lazy(() => import('../auth/layouts/AuthLayout'));
 export const appRouter = createBrowserRouter([
   {
     path: '/',
-    element: <PetHealthTrackerLayout />,
+    element: (
+      <OwnerRoute>
+        <PetHealthTrackerLayout />
+      </OwnerRoute>
+    ),
     children: [
       {
         index: true,
@@ -27,7 +35,11 @@ export const appRouter = createBrowserRouter([
   },
   {
     path: '/auth',
-    element: <AuthLayout />,
+    element: (
+      <NotAuthenticatedRoute>
+        <AuthLayout />
+      </NotAuthenticatedRoute>
+    ),
     children: [
       {
         index: true,

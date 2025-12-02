@@ -6,7 +6,7 @@ import { FaEye, FaEyeSlash, FaFacebook, FaGoogle } from 'react-icons/fa';
 import { Header } from '@/components/Header';
 import { useState } from 'react';
 import { useAuthStore } from '@/auth/store/auth.store';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
 export const RegisterPage = () => {
@@ -241,6 +241,12 @@ export const RegisterPage = () => {
           </button>
         </div>
       </form>
+      <section className='justify-center flex'>
+        Ya tienes cuenta?&nbsp;
+        <Link to='/auth/login' className='underline'>
+          Inicia sesión
+        </Link>
+      </section>
       <section className='flex justify-center items-center w-full'>
         <hr className='flex-1 mx-4 text-gray-300 border' />
         <span className='text-xl'>O</span>

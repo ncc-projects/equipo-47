@@ -6,11 +6,13 @@ export const registerUserAction = async ({
   email,
   fullName,
   password,
+  confirmPassword,
 }: Register): Promise<RegisterResponse> => {
   const { data } = await petAPI.post<RegisterResponse>('/users/register', {
     fullName,
     email,
     password,
+    confirmPassword,
   });
 
   return data;

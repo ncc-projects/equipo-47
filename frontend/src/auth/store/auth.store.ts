@@ -1,3 +1,4 @@
+import { checkAuthAction } from '../actions/checkAuth.action';
 import { loginAction } from '../actions/login.action';
 import { registerUserAction } from '../actions/registerUser.action';
 import type { Role, User } from '../interfaces/user.interface';
@@ -23,8 +24,7 @@ type AuthState = {
 
   getRoles: () => Role[];
 
-  hasRole: (role: Role) => boolean;
-  hasAnyRole: (roles: Role[]) => boolean;
+  hasRole: (roleName: string) => boolean;
   isAdmin: () => boolean;
   isOwner: () => boolean;
 
@@ -36,7 +36,7 @@ type AuthState = {
     password,
     confirmPassword,
   }: RegisterProps) => Promise<boolean>;
-  // checkAuthStatus: () => Promise<boolean>;
+  checkAuthStatus: () => Promise<boolean>;
   setAuthStatus: (status: AuthStatus) => void;
 };
 
@@ -47,25 +47,18 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
 
   getRoles: () => (get().user?.roles as Role[]) || [],
 
-  // Helpers de roles
-  hasRole: (role: Role) => {
-    const roles = get().user?.roles || [];
-    return roles.includes(role);
-  },
-
-  hasAnyRole: (roles: Role[]) => {
-    const userRoles = get().user?.roles || [];
-    return roles.some((role) => userRoles.includes(role));
+  hasRole: (roleName: string) => {
+    return get().user?.roles?.some((r) => r.name === roleName) ?? false;
   },
 
   isAdmin: () => {
     const roles = get().user?.roles || [];
-    return roles.includes({ name: 'ADMIN', id: 2, enabled: true });
+    return roles.some((r) => r.name === 'ADMIN') ?? false;
   },
 
   isOwner: () => {
     const roles = get().user?.roles || [];
-    return roles.includes({ name: 'OWNER', id: 1, enabled: true });
+    return roles.some((r) => r.name === 'OWNER') ?? false;
   },
 
   setAuthStatus: (status: AuthStatus) => set({ authStatus: status }),
@@ -106,7 +99,9 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
         password,
         confirmPassword,
       });
+
       localStorage.setItem('token', data.data.token);
+
       set({
         user: data.data.userResponseDTO,
         token: data.data.token,
@@ -122,36 +117,29 @@ export const useAuthStore = create<AuthState>()((set, get) => ({
   },
 
   logout: async () => {
-    // Limpiar estado local
     localStorage.removeItem('token');
     set({ user: null, token: null, authStatus: 'not-authenticated' });
   },
 
-  // checkAuthStatus: async () => {
-  //   try {
-  //     const { user, accessToken, sessionConfig } = await checkAuthAction();
+  checkAuthStatus: async () => {
+    try {
+      const { userResponseDTO: user, token } = await checkAuthAction();
 
-  //     set({
-  //       user,
-  //       token: accessToken,
-  //       sessionConfig: sessionConfig,
-  //     });
+      set({
+        user,
+        token,
+        authStatus: 'authenticated',
+      });
 
-  //     if (!user.isVerified) {
-  //       set({ authStatus: 'verification' });
-  //       return true;
-  //     }
-
-  //     set({ authStatus: 'authenticated', verificationAttempts: 0 });
-  //     return true;
-  //   } catch (error) {
-  //     console.log(error);
-  //     set({
-  //       user: undefined,
-  //       token: undefined,
-  //       authStatus: 'not-authenticated',
-  //     });
-  //     return false;
-  //   }
-  // },
+      return true;
+    } catch (error) {
+      console.log(error);
+      set({
+        user: undefined,
+        token: undefined,
+        authStatus: 'not-authenticated',
+      });
+      return false;
+    }
+  },
 }));

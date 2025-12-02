@@ -18,6 +18,11 @@ public record UserRegisterRequestDTO(
         @Schema(description = "Contraseña del usuario", example = "12345678A")
         @NotNull
         @Size(min = 8, message = "La contraseña debe tener como mínimo 8 caracteres")
-        String password
+        String password,
+
+        @Schema(description = "Confirmación de la contraseña", example = "12345678A")
+        @NotNull
+        @Size(min = 8)
+        String confirmPassword
 ) {
 }

@@ -1,5 +1,6 @@
 package com.example.petbackend.features.user.service;
 
+import com.example.petbackend.config.exceptions.BadRequestException;
 import com.example.petbackend.config.exceptions.DuplicateResourceException;
 import com.example.petbackend.config.exceptions.NotFoundException;
 import com.example.petbackend.features.auth.service.TokenService;
@@ -40,6 +41,11 @@ public class UserService implements IUserService {
     @Transactional
     @Override
     public RegisteredUserResponseDTO createUser(UserRegisterRequestDTO userDto) {
+
+        if(!userDto.password().equals(userDto.confirmPassword())){
+            throw new BadRequestException("Las contraseñas no coinciden");
+        }
+
         validateUserUniqueness(userDto);
         User user = new User(userDto);
         assignDefaultRole(user);
