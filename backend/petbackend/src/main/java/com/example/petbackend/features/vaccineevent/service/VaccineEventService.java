@@ -1,5 +1,6 @@
 package com.example.petbackend.features.vaccineevent.service;
 
+import com.example.petbackend.config.exceptions.BadRequestException;
 import com.example.petbackend.config.exceptions.NotFoundException;
 import com.example.petbackend.config.exceptions.PetOwnerMismatchException;
 import com.example.petbackend.features.pet.model.Pet;
@@ -106,14 +107,44 @@ public class VaccineEventService implements IVaccineEventService {
     }
 
     @Override
-    public List<VaccineEventResponseDTO> getReminders(LocalDate startDate, Boolean hasReminder) {
+    public List<VaccineEventResponseDTO> getReminders(
+            Long petId,
+            Long userId,
+            LocalDate scheduledDate,
+            LocalDate appliedDate,
+            Boolean hasReminder
+    ) {
 
-        if (startDate == null) {
-            startDate = LocalDate.now();
+        if (scheduledDate != null && appliedDate != null) {
+            throw new BadRequestException("Solo usar una de las 2 fechas o ninguna");
         }
 
-        return vaccineEventRepository.findUpcomingScheduled(startDate, hasReminder)
-                .stream().map(VaccineEventResponseDTO::new).toList();
+        Pet petDb = petRepository.findById(petId)
+                .orElseThrow(() -> new NotFoundException("Mascota no encontrada"));
+
+        if (!petDb.getOwner().getId().equals(userId)) {
+            throw new PetOwnerMismatchException("No tienes permiso para acceder a esta mascota");
+        }
+
+        if (scheduledDate == null && appliedDate == null) {
+            scheduledDate = LocalDate.now();
+        }
+
+        if (scheduledDate != null) {
+            return vaccineEventRepository.findUpcomingScheduled(
+                    petId,
+                    userId,
+                    scheduledDate,
+                    hasReminder
+            ).stream().map(VaccineEventResponseDTO::new).toList();
+        }
+
+        return vaccineEventRepository.getAppliedEvents(
+                petId,
+                userId,
+                appliedDate,
+                hasReminder
+        ).stream().map(VaccineEventResponseDTO::new).toList();
     }
 
     private String generateTraceId() {
