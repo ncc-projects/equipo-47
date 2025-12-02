@@ -14,11 +14,40 @@ public interface IVaccineEventRepository extends JpaRepository<VaccineEvent, Lon
     @Query("""
             SELECT v
             FROM VaccineEvent v
-            WHERE v.eventType = 'SCHEDULED'
-            AND v.scheduledDate >= :startDate
+            WHERE v.pet.id = :petId
+            AND v.pet.owner.id = :userId
+            AND (
+                v.eventType = 'SCHEDULED'
+                AND v.scheduledDate >= :scheduledDate
+            )
             AND (:hasReminder IS NULL OR v.hasReminder = :hasReminder)
             AND v.enabled = true
             ORDER BY v.scheduledDate ASC
             """)
-    List<VaccineEvent> findUpcomingScheduled(LocalDate startDate, Boolean hasReminder);
+    List<VaccineEvent> findUpcomingScheduled(
+            Long petId,
+            Long userId,
+            LocalDate scheduledDate,
+            Boolean hasReminder
+    );
+
+    @Query("""
+            SELECT v
+            FROM VaccineEvent v
+            WHERE v.pet.id = :petId
+            AND v.pet.owner.id = :userId
+            AND (
+                v.eventType = 'APPLIED'
+                AND v.appliedDate >= :appliedDate
+            )
+            AND (:hasReminder IS NULL OR v.hasReminder = :hasReminder)
+            AND v.enabled = true
+            ORDER BY v.appliedDate ASC
+            """)
+    List<VaccineEvent> getAppliedEvents(
+            Long petId,
+            Long userId,
+            LocalDate appliedDate,
+            Boolean hasReminder
+    );
 }
