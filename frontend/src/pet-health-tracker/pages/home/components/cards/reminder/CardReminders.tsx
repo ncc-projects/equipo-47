@@ -7,7 +7,7 @@ export const CardReminders = () => {
     <div className='p-4 bg-white rounded-lg'>
       <h3 className='font-bold ml-2 mb-2'>Recordatorios</h3>
 
-      <div className='flex flex-col'>
+      <div className='flex flex-col gap-2'>
         <CardReminder
           img={Cat}
           name='Chihiro'
