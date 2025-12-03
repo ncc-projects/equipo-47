@@ -1,49 +1,61 @@
 import { Header } from '@/components/Header';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  createPetSchema,
-  type CreatePet,
-} from './create/schemas/createPetSchema';
 import { CustomButton } from '@/components/custom/CustomButton';
-import { useCreatePet } from './create/hooks/useCreatePet';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
+import { useGetPetByID } from './profile/hooks/useGetPetByID';
+import { useParams } from 'react-router';
+import {
+  updatePetSchema,
+  type UpdatePetForm,
+  transformUpdatePetData,
+} from './edit/schemas/updatePetSchema';
+import { useUpdatePetByID } from './edit/hooks/useUpdatePetByID';
 
 const Dog = '/src/assets/pets/dog.png';
 
-export const PetCreatePage = () => {
+export const UpdatePetPage = () => {
+  const { petId } = useParams();
+  const { data } = useGetPetByID(petId || '');
+
   const {
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<CreatePet>({
-    defaultValues: {
-      name: '',
-      species: '',
-      breed: '',
-      weight: 0,
-      birthDate: '',
-      color: '',
-      feeding: '',
-    },
-    resolver: zodResolver(createPetSchema),
+  } = useForm<UpdatePetForm>({
+    resolver: zodResolver(updatePetSchema),
   });
 
-  const { mutateAsync } = useCreatePet();
+  useEffect(() => {
+    if (data) {
+      reset({
+        name: data.name || undefined,
+        species: data.species || undefined,
+        breed: data.breed || undefined,
+        gender: data.gender,
+        weight: data.weight || undefined,
+        birthDate: data.birthDate || undefined,
+        color: data.color || undefined,
+        feeding: data.feeding || undefined,
+        neutered: data.neutered ? 'yes' : 'no',
+        notes: data.notes || undefined,
+      });
+    }
+  }, [data, reset]);
 
-  const onSubmit = async (formData: CreatePet) => {
+  const { mutateAsync } = useUpdatePetByID(petId || '');
+
+  const onSubmit = async (formData: UpdatePetForm) => {
     await mutateAsync({
-      ...formData,
-      neutered: formData.neutered === 'yes' ? true : false,
-      notes: formData.notes ?? '',
+      petId: petId || '',
+      pet: transformUpdatePetData(formData),
     });
 
-    toast.success('Se agregó correctamente la mascota', {
+    toast.success('Se actualizó correctamente la mascota', {
       position: 'top-center',
     });
-
-    reset();
   };
 
   return (
@@ -51,7 +63,7 @@ export const PetCreatePage = () => {
       <Header
         img={Dog}
         imgClass='w-60 object-contain'
-        title='Agrega tu mascota'
+        title='Actualiza tu mascota'
         titleClass='font-normal text-xl mt-6'
       />
 
@@ -377,7 +389,7 @@ export const PetCreatePage = () => {
           )}
         </div>
 
-        <CustomButton type='submit'>Añadir mascota</CustomButton>
+        <CustomButton type='submit'>Actualizar mascota</CustomButton>
       </form>
     </>
   );
