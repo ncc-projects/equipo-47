@@ -3,12 +3,13 @@ import { lazy } from 'react';
 import { LoginPage } from '../auth/pages/login/LoginPage';
 import { RegisterPage } from '../auth/pages/register/RegisterPage';
 import { HomePage } from '../pet-health-tracker/pages/home/HomePage';
-import { ProfilePage } from '@/pet-health-tracker/pages/profile/ProfilePage';
 import {
   NotAuthenticatedRoute,
   OwnerRoute,
 } from '@/components/routes/ProtectedRoutes';
-import { PetCreatePage } from '@/pet-health-tracker/pages/pets/PetCreatePage';
+import { UpdatePetPage } from '@/pet-health-tracker/pages/pets/UpdatePetPage';
+import { ProfilePetPage } from '@/pet-health-tracker/pages/pets/ProfilePetPage';
+import { CreatePetPage } from '@/pet-health-tracker/pages/pets/CreatePetPage';
 
 const PetHealthTrackerLayout = lazy(
   () => import('../pet-health-tracker/layouts/PetHealthTrackerLayout')
@@ -29,12 +30,16 @@ export const appRouter = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: '/perfil/:petId',
-        element: <ProfilePage />,
+        path: '/pets/perfil/:petId',
+        element: <ProfilePetPage />,
       },
       {
         path: 'pets/nuevo',
-        element: <PetCreatePage />,
+        element: <CreatePetPage />,
+      },
+      {
+        path: 'pets/:petId',
+        element: <UpdatePetPage />,
       },
     ],
   },

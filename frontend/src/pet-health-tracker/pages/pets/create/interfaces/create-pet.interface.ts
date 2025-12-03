@@ -1,3 +1,5 @@
+import type { GenderPet } from "./pet.interface";
+
 export interface CreatePet {
   name:      string;
   species:   string;
@@ -10,5 +12,3 @@ export interface CreatePet {
   neutered:  boolean;
   notes:     string;
 }
-
-type GenderPet = 'female' | 'male'
