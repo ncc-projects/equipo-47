@@ -5,7 +5,7 @@ import { CardServices } from './components/cards/service/CardServices';
 
 export const HomePage = () => {
   return (
-    <div className='p-4 gap-4 flex flex-col'>
+    <div className='gap-4 flex flex-col'>
       <CardProfile name='María' />
       <CardPets />
       <CardReminders />

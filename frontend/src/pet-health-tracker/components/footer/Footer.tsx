@@ -52,7 +52,7 @@ export const Footer = () => {
           </li>
 
           <li className='flex justify-center'>
-            <Link to='/pets'>
+            <Link to='/pets/nuevo'>
               <img
                 src={petIcon}
                 alt='Mascotas'

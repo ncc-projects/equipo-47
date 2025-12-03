@@ -8,6 +8,7 @@ import {
   NotAuthenticatedRoute,
   OwnerRoute,
 } from '@/components/routes/ProtectedRoutes';
+import { PetCreatePage } from '@/pet-health-tracker/pages/pets/PetCreatePage';
 
 const PetHealthTrackerLayout = lazy(
   () => import('../pet-health-tracker/layouts/PetHealthTrackerLayout')
@@ -30,6 +31,10 @@ export const appRouter = createBrowserRouter([
       {
         path: '/perfil/:petId',
         element: <ProfilePage />,
+      },
+      {
+        path: 'pets/nuevo',
+        element: <PetCreatePage />,
       },
     ],
   },
