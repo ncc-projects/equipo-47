@@ -1,5 +1,6 @@
 package com.example.petbackend.features.pet.model;
 
+import com.example.petbackend.features.pet.Enum.Gender;
 import com.example.petbackend.features.user.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -30,5 +31,10 @@ public class Pet {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User owner;
+
+    private String profileImageUrl;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
 }
