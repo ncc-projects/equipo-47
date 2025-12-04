@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/pet_db}
+    url: jdbc:postgresql://localhost:5432/pet_db
     username: ${DB_USER}
     password: ${DB_PASS}
     driver-class-name: org.postgresql.Driver
@@ -25,3 +25,8 @@ petbackend:
 security:
   secret: ${JWT_SECRET}  # Get from env vars
   expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+cloudinary:
+  cloud_name: ${CLOUDINARY_NAME}
+  api_key: ${CLOUDINARY_API_KEY}
+  api_secret: ${CLOUDINARY_API_SECRET}
