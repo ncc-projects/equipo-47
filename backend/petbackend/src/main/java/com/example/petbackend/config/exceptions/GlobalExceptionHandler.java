@@ -1,5 +1,6 @@
 package com.example.petbackend.config.exceptions;
 
+
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, WebRequest request) {
-        var errors = ex.getFieldErrors().stream().map(DataErrorValidation::new).toList();
+        var errors = ex.getFieldErrors()
+                .stream()
+                .map(DataErrorValidation::new)
+                .toList();
+
         return buildResponseEntity(HttpStatus.BAD_REQUEST, errors, request);
     }
 
@@ -43,14 +48,17 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.FORBIDDEN, ex.getMessage(), request);
     }
 
-    // Manejo de la excepcion del formato de fechas y enums para el @RequestBody
+    // Manejo de la excepción para formatos inválidos (enums, fechas, etc.)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex, WebRequest request) {
+
         Throwable cause = ex.getCause();
 
         if (cause instanceof InvalidFormatException invalidFormatException) {
-            // Verifica si el error es por un Enum
+
             Class<?> targetType = invalidFormatException.getTargetType();
+
+            // Error por ENUM incorrecto
             if (targetType.isEnum()) {
                 Map<String, Object> error = new HashMap<>();
                 error.put("message", "Valor inválido para el campo tipo enum: " + targetType.getSimpleName());
@@ -60,9 +68,16 @@ public class GlobalExceptionHandler {
             }
         }
 
-        String message = "Error de formato en los datos enviados. Verifica que las fechas estén en formato ISO 8601, por ejemplo: '2025-08-10'.";
+        String message = "Error de formato en los datos enviados. " +
+                "Verifica que las fechas estén en formato ISO 8601, por ejemplo: '2025-08-10'.";
+
         return buildResponseEntity(HttpStatus.BAD_REQUEST, message, request);
     }
+
+
+    // ---------------------------
+    // Helper Methods
+    // ---------------------------
 
     private <T> ResponseEntity<Object> buildResponseEntity(HttpStatus status, T content, WebRequest request) {
         Map<String, Object> body = new HashMap<>();
@@ -71,11 +86,12 @@ public class GlobalExceptionHandler {
         body.put("error", status.getReasonPhrase());
         body.put("message", content);
         body.put("path", extractPath(request));
+
         return new ResponseEntity<>(body, status);
     }
 
     private String extractPath(WebRequest request) {
-        return request.getDescription(false).substring(4); // Remove 'uri=' prefix
+        return request.getDescription(false).replace("uri=", "");
     }
 
     private record DataErrorValidation(String field, String error) {

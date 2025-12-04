@@ -1,0 +1,20 @@
+package com.example.petbackend.features.pet.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ImageResponseDTO {
+    private String fileName;
+    private String fileUrl;
+    private String fileId;
+    private String format;
+    private Long size;
+    private Integer width;
+    private Integer height;
+}
