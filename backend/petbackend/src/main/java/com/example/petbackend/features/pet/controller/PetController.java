@@ -49,7 +49,6 @@ public class PetController {
             throw new BadRequestException("El objeto 'pet' no puede estar vacío.");
         }
 
-        // 2️⃣ Convertir el JSON string a un mapa para saber si viene vacío "{}"
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> raw = mapper.readValue(petJson, Map.class);
 
@@ -57,13 +56,11 @@ public class PetController {
             throw new BadRequestException("Debe enviar datos para crear la mascota.");
         }
 
-        // 3️⃣ Ahora sí, convertir a DTO final
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         PetRequestDTO petDTO = mapper.readValue(petJson, PetRequestDTO.class);
 
-        // 4️⃣ Crear la mascota
         PetResponseDTO createdPet = petService.createPet(petDTO, profileImage, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPet);
     }
