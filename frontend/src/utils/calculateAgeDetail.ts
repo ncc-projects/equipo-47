@@ -1,10 +1,10 @@
-export const calculateAgeDetail = (fechaNacimiento: string) => {
-  const hoy = new Date();
-  const nacimiento = new Date(fechaNacimiento);
+export const calculateAgeDetail = (dateBirth: string) => {
+  const today = new Date();
+  const birth = new Date(dateBirth);
 
-  let years = hoy.getFullYear() - nacimiento.getFullYear();
-  let months = hoy.getMonth() - nacimiento.getMonth();
-  const days = hoy.getDate() - nacimiento.getDate();
+  let years = today.getFullYear() - birth.getFullYear();
+  let months = today.getMonth() - birth.getMonth();
+  const days = today.getDate() - birth.getDate();
 
   if (days < 0) {
     months--;
