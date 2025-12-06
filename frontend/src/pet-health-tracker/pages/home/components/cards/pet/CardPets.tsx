@@ -16,6 +16,7 @@ export const CardPets = ({ pets }: Props) => {
         {pets.map((pet) => (
           <CardPet
             key={pet.id}
+            petId={pet.id}
             img={pet.profileImageUrl || Cat}
             name={pet.name || 'Chihiro'}
             birthDate={calculateAgeDetail(pet.birthDate!) || '2 años y 3 meses'}
