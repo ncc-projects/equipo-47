@@ -1,4 +1,3 @@
-import { Header } from '@/components/Header';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -8,10 +7,15 @@ import {
 import { CustomButton } from '@/components/custom/CustomButton';
 import { useCreatePet } from './create/hooks/useCreatePet';
 import { toast } from 'sonner';
+import { useState, useRef, useEffect } from 'react';
+import { UploadImage } from './create/components/UploadImage';
 
 const Dog = '/src/assets/pets/dog.png';
 
 export const CreatePetPage = () => {
+  const [image, setImage] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null!);
+
   const {
     handleSubmit,
     control,
@@ -26,17 +30,41 @@ export const CreatePetPage = () => {
       birthDate: '',
       color: '',
       feeding: '',
+      notes: '',
+      neutered: undefined,
+      gender: undefined,
     },
     resolver: zodResolver(createPetSchema),
   });
 
   const { mutateAsync } = useCreatePet();
 
+  useEffect(() => {
+    if (!image && fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [image]);
+
+  useEffect(() => {
+    let preview: string | undefined;
+
+    if (image) {
+      preview = URL.createObjectURL(image);
+    }
+
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [image]);
+
   const onSubmit = async (formData: CreatePet) => {
     await mutateAsync({
-      ...formData,
-      neutered: formData.neutered === 'yes' ? true : false,
-      notes: formData.notes ?? '',
+      data: {
+        ...formData,
+        neutered: formData.neutered === 'yes' ? true : false,
+        notes: formData.notes ?? '',
+      },
+      image,
     });
 
     toast.success('Se agregó correctamente la mascota', {
@@ -44,16 +72,34 @@ export const CreatePetPage = () => {
     });
 
     reset();
+    setImage(null);
   };
 
   return (
     <>
-      <Header
-        img={Dog}
-        imgClass='w-60 object-contain'
+      <UploadImage
+        img={image ? URL.createObjectURL(image) : Dog}
+        imgClass='w-60 h-50 rounded-lg'
         title='Agrega tu mascota'
         titleClass='font-normal text-xl mt-6'
+        onRemoveImage={image ? () => setImage(null) : undefined}
+        fileInputRef={fileInputRef}
       />
+
+      {/* Imagen */}
+      <input
+        type='file'
+        hidden
+        ref={fileInputRef}
+        accept='image/*'
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) {
+            setImage(file);
+          }
+        }}
+      />
+      {/* </div> */}
 
       <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-7.5'>
         {/* name pet */}
@@ -151,9 +197,9 @@ export const CreatePetPage = () => {
               <div className='flex justify-between gap-12'>
                 <CustomButton
                   type='button'
-                  onClick={() => onChange('female')}
+                  onClick={() => onChange('HEMBRA')}
                   className={
-                    value === 'female'
+                    value === 'HEMBRA'
                       ? 'bg-transparent text-black border-2 border-primary'
                       : 'text-black border-2 border-primary'
                   }
@@ -162,9 +208,9 @@ export const CreatePetPage = () => {
                 </CustomButton>
                 <CustomButton
                   type='button'
-                  onClick={() => onChange('male')}
+                  onClick={() => onChange('MACHO')}
                   className={
-                    value === 'male'
+                    value === 'MACHO'
                       ? 'bg-transparent text-black border-2 border-primary'
                       : 'text-black border-2 border-primary'
                   }
