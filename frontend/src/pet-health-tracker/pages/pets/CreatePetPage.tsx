@@ -9,12 +9,14 @@ import { useCreatePet } from './create/hooks/useCreatePet';
 import { toast } from 'sonner';
 import { useState, useRef, useEffect } from 'react';
 import { UploadImage } from './create/components/UploadImage';
+import { useNavigate } from 'react-router';
 
 const Dog = '/src/assets/pets/dog.png';
 
 export const CreatePetPage = () => {
   const [image, setImage] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null!);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -73,6 +75,7 @@ export const CreatePetPage = () => {
 
     reset();
     setImage(null);
+    navigate('/');
   };
 
   return (
