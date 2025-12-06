@@ -1,4 +1,4 @@
-import type { GenderPet } from "./pet.interface";
+import type { GenderPet } from "@/pet-health-tracker/pages/home/interfaces/pets.interface";
 
 export interface CreatePet {
   name:            string;

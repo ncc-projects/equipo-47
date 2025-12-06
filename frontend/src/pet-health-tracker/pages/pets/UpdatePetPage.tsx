@@ -1,4 +1,3 @@
-import { Header } from '@/components/Header';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CustomButton } from '@/components/custom/CustomButton';
@@ -12,6 +11,7 @@ import {
   transformUpdatePetData,
 } from './edit/schemas/updatePetSchema';
 import { useUpdatePetByID } from './edit/hooks/useUpdatePetByID';
+import { Header } from '@/components/Header';
 
 const Dog = '/src/assets/pets/dog.png';
 
@@ -41,6 +41,7 @@ export const UpdatePetPage = () => {
         feeding: data.feeding || undefined,
         neutered: data.neutered ? 'yes' : 'no',
         notes: data.notes || undefined,
+        profileImageUrl: data.profileImageUrl || null,
       });
     }
   }, [data, reset]);
@@ -61,7 +62,7 @@ export const UpdatePetPage = () => {
   return (
     <>
       <Header
-        img={Dog}
+        img={data?.profileImageUrl || Dog}
         imgClass='w-60 object-contain'
         title='Actualiza tu mascota'
         titleClass='font-normal text-xl mt-6'
@@ -163,9 +164,9 @@ export const UpdatePetPage = () => {
               <div className='flex justify-between gap-12'>
                 <CustomButton
                   type='button'
-                  onClick={() => onChange('female')}
+                  onClick={() => onChange('HEMBRA')}
                   className={
-                    value === 'female'
+                    value === 'HEMBRA'
                       ? 'bg-transparent text-black border-2 border-primary'
                       : 'text-black border-2 border-primary'
                   }
@@ -174,9 +175,9 @@ export const UpdatePetPage = () => {
                 </CustomButton>
                 <CustomButton
                   type='button'
-                  onClick={() => onChange('male')}
+                  onClick={() => onChange('MACHO')}
                   className={
-                    value === 'male'
+                    value === 'MACHO'
                       ? 'bg-transparent text-black border-2 border-primary'
                       : 'text-black border-2 border-primary'
                   }

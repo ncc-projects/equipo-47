@@ -1,6 +1,6 @@
 import { petAPI } from '@/api/petApi';
-import type { Pet } from '../interfaces/pet.interface';
 import type { CreatePet } from '../interfaces/create-pet.interface';
+import type { Pet } from '@/pet-health-tracker/pages/home/interfaces/pets.interface';
 
 interface CreatePetActionProps {
   data: CreatePet;

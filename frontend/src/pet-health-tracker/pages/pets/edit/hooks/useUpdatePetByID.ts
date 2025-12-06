@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePetByIDAction } from '../actions/updatePetByID.action';
-import type { Pet } from '../../create/interfaces/pet.interface';
+import type { Pet } from '@/pet-health-tracker/pages/home/interfaces/pets.interface';
 
 export const useUpdatePetByID = (petId: string) => {
   const queryClient = useQueryClient();
