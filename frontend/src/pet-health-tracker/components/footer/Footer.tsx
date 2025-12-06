@@ -32,7 +32,7 @@ export const Footer = () => {
           </li>
 
           <li className='flex justify-center relative'>
-            <Link to='/calendar' className='relative'>
+            <Link to='/pets/calendar' className='relative'>
               <img
                 src={calendarIcon}
                 alt='Calendario'
