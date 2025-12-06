@@ -29,7 +29,7 @@ export const CreatePetPage = () => {
       species: '',
       breed: '',
       weight: 0,
-      birthDate: '',
+      birthDate: undefined,
       color: '',
       feeding: '',
       notes: '',
