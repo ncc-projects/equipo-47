@@ -10,7 +10,7 @@ export const createPetSchema = z.object({
   breed: z
     .string({ error: 'Escriba la raza de su mascota' })
     .min(3, { error: 'Escriba al menos 3 caracteres' }),
-  gender: z.enum(['female', 'male'], {
+  gender: z.enum(['MACHO', 'HEMBRA'], {
     error: 'Seleccione el sexo de su mascota',
   }),
   birthDate: z.string({ error: 'Elija la fecha de nacimiento de su mascota' }),
