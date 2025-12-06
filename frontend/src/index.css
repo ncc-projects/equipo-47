@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -17,7 +17,6 @@
   font-style: italic;
 }
 
-/* --- 200: Thin (font-extralight) --- */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueThin.otf') format('opentype');
@@ -45,15 +44,13 @@
   font-style: italic;
 }
 
-/* --- 400: Regular / Roman (font-normal) --- */
-/* Usamos la versión Roman OTF como principal por calidad */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueRoman.otf') format('opentype');
   font-weight: 400;
   font-style: normal;
 }
-/* Usamos el TTF para la cursiva normal, ya que es el único que tienes para este peso */
+
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueItalic.ttf') format('truetype');
@@ -61,7 +58,6 @@
   font-style: italic;
 }
 
-/* --- 500: Medium (font-medium) --- */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueMedium.otf') format('opentype');
@@ -75,7 +71,6 @@
   font-style: italic;
 }
 
-/* --- 700: Bold (font-bold) --- */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueBold.otf') format('opentype');
@@ -89,7 +84,6 @@
   font-style: italic;
 }
 
-/* --- 800: Heavy (font-extrabold) --- */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueHeavy.otf') format('opentype');
@@ -103,7 +97,6 @@
   font-style: italic;
 }
 
-/* --- 900: Black (font-black) --- */
 @font-face {
   font-family: 'Helvetica Neue Project';
   src: url('./assets/fonts/HelveticaNeueBlack.otf') format('opentype');
@@ -118,27 +111,28 @@
 }
 
 @theme {
-  --font-sans: 'Helvetica Neue Project', 'Helvetica Neue', 'Arial', sans-serif;
   --color-primary: #97dfcb;
-  --color-footer: #d2f2e8;
   --color-secondary: #ffa96c;
   --color-background: #fbf2e8;
+  --color-footer: #d2f2e8;
 }
 
 @theme inline {
+  --font-sans: 'Helvetica Neue Project', 'Helvetica Neue', 'Arial', sans-serif;
+  --color-footer: #d2f2e8;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
+  /* --color-background: var(--background); */
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
+  /* --color-primary: var(--primary); */
   --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
+  /* --color-secondary: var(--secondary); */
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -165,15 +159,15 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
+  --background: #fbf2e8;
   --foreground: oklch(0.129 0.042 264.695);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
+  --primary: #97dfcb;
   --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
+  --secondary: #ffa96c;
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
