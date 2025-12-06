@@ -2,7 +2,7 @@ interface Props {
   img: string;
   name: string;
   deworming: string;
-  vaccination: string;
+  vaccination: number;
 }
 
 export const CardReminder = ({ deworming, img, name, vaccination }: Props) => {
@@ -14,7 +14,11 @@ export const CardReminder = ({ deworming, img, name, vaccination }: Props) => {
       </div>
       <div className='flex flex-col gap-1 text-xs'>
         <p className='bg-footer px-1 py-0.5 rounded-sm'>{deworming}</p>
-        <p className='bg-footer px-1 py-0.5 rounded-sm'>{vaccination}</p>
+        {vaccination !== 0 && (
+          <p className='bg-footer px-1 py-0.5 rounded-sm'>
+            Próxima vacunación en {vaccination} días
+          </p>
+        )}
       </div>
     </div>
   );
