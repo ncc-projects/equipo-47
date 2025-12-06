@@ -50,4 +50,40 @@ public interface IVaccineEventRepository extends JpaRepository<VaccineEvent, Lon
             LocalDate appliedDate,
             Boolean hasReminder
     );
+
+    @Query("""
+            SELECT v
+            FROM VaccineEvent v
+            WHERE v.enabled = true
+            AND (:hasReminder IS NULL OR v.hasReminder = :hasReminder)
+            AND (
+                v.eventType = 'SCHEDULED'
+                AND v.scheduledDate >= :scheduledDate
+            )
+            AND v.user.id = :userId
+            ORDER BY v.scheduledDate ASC
+            """)
+    List<VaccineEvent> findByUserIdAndScheduledDateAndFilters(
+            Long userId,
+            LocalDate scheduledDate,
+            Boolean hasReminder
+    );
+
+    @Query("""
+            SELECT v
+            FROM VaccineEvent v
+            WHERE v.enabled = true
+            AND (:hasReminder IS NULL OR v.hasReminder = :hasReminder)
+            AND (
+                v.eventType = 'APPLIED'
+                AND v.appliedDate >= :appliedDate
+            )
+            AND v.user.id = :userId
+            ORDER BY v.appliedDate ASC
+            """)
+    List<VaccineEvent> findByUserIdAndAppliedDateAndFilters(
+            Long userId,
+            LocalDate appliedDate,
+            Boolean hasReminder
+    );
 }

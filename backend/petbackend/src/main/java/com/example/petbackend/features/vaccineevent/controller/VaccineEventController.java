@@ -2,6 +2,7 @@ package com.example.petbackend.features.vaccineevent.controller;
 
 import com.example.petbackend.config.responses.DataResponse;
 import com.example.petbackend.features.user.model.User;
+import com.example.petbackend.features.vaccineevent.dto.PetVaccinationGroupResponseDTO;
 import com.example.petbackend.features.vaccineevent.dto.VaccineEventRegisterDTO;
 import com.example.petbackend.features.vaccineevent.dto.VaccineEventResponseDTO;
 import com.example.petbackend.features.vaccineevent.service.IVaccineEventService;
@@ -61,7 +62,7 @@ public class VaccineEventController {
     }
 
     @Operation(
-            summary = "Listar eventos de vacunaciones",
+            summary = "Listar eventos de vacunaciones por mascota",
             description = "Solo accesible por usuarios con rol OWNER, además usar una de las 2 fechas(scheduledDate y appliedDate) o ninguna",
             parameters = {
                     @Parameter(name = "scheduledDate", description = "Fecha programada", example = "2025-05-11"),
@@ -86,6 +87,33 @@ public class VaccineEventController {
         return vaccineEventService.getReminders(
                 petId,
                 currentUser.getId(), // <-- se obtiene el userId del token
+                scheduledDate,
+                appliedDate,
+                hasReminder);
+    }
+
+    @Operation(
+            summary = "Listar eventos de vacunaciones por usuario",
+            description = "Solo accesible por usuarios con rol OWNER, además usar una de las 2 fechas(scheduledDate y appliedDate) o ninguna",
+            parameters = {
+                    @Parameter(name = "scheduledDate", description = "Fecha programada", example = "2025-05-11"),
+                    @Parameter(name = "appliedDate", description = "Fecha de aplicación", example = "2025-05-11"),
+                    @Parameter(name = "hasReminder", description = "Indica si tiene recordatorio", example = "true")
+            },
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de eventos de vacunaciones agrupadas por mascota"),
+                    @ApiResponse(responseCode = "400", description = "Datos inválidos o error en validación", content = @Content)
+            }
+    )
+    @GetMapping
+    public List<PetVaccinationGroupResponseDTO> getVaccinationsGrouped(
+            @AuthenticationPrincipal User currentUser,
+            @RequestParam(required = false) LocalDate scheduledDate,
+            @RequestParam(required = false) LocalDate appliedDate,
+            @RequestParam(required = false) Boolean hasReminder
+    ) {
+        return vaccineEventService.getVaccinationsGrouped(
+                currentUser.getId(),
                 scheduledDate,
                 appliedDate,
                 hasReminder);
