@@ -1,6 +1,7 @@
 package com.example.petbackend.features.vaccineevent.model;
 
 import com.example.petbackend.features.pet.model.Pet;
+import com.example.petbackend.features.user.model.User;
 import com.example.petbackend.features.vaccinetype.model.VaccineType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -29,6 +30,10 @@ public class VaccineEvent {
     @ManyToOne(optional = false)
     @JoinColumn(name = "vaccine_type_id")
     private VaccineType vaccineType;  // obligatorio
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.example.petbackend.features.vaccineevent.service;
 
+import com.example.petbackend.features.vaccineevent.dto.PetVaccinationGroupResponseDTO;
 import com.example.petbackend.features.vaccineevent.dto.VaccineEventRegisterDTO;
 import com.example.petbackend.features.vaccineevent.dto.VaccineEventResponseDTO;
 
@@ -11,6 +12,13 @@ public interface IVaccineEventService {
 
     List<VaccineEventResponseDTO> getReminders(
             Long petId,
+            Long userId,
+            LocalDate scheduledDate,
+            LocalDate appliedDate,
+            Boolean hasReminder
+    );
+
+    List<PetVaccinationGroupResponseDTO> getVaccinationsGrouped(
             Long userId,
             LocalDate scheduledDate,
             LocalDate appliedDate,
