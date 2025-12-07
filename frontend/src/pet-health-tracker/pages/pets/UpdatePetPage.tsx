@@ -1,32 +1,45 @@
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { CustomButton } from '@/components/custom/CustomButton';
+import { CustomDatePicker } from '@/components/custom/CustomDatePicker';
+import { Header } from '@/components/Header';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
-import { useGetPetByID } from './profile/hooks/useGetPetByID';
-import { useParams } from 'react-router';
+import { useUpdatePetByID } from './edit/hooks/useUpdatePetByID';
 import {
   updatePetSchema,
   type UpdatePetForm,
-  transformUpdatePetData,
 } from './edit/schemas/updatePetSchema';
-import { useUpdatePetByID } from './edit/hooks/useUpdatePetByID';
-import { Header } from '@/components/Header';
+import { useGetPetByID } from './profile/hooks/useGetPetByID';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { CustomTextField } from '@/components/custom/CustomTextField';
 
 const Dog = '/src/assets/pets/dog.png';
 
 export const UpdatePetPage = () => {
+  const navigate = useNavigate();
   const { petId } = useParams();
   const { data } = useGetPetByID(petId || '');
+
+  const form = useForm<UpdatePetForm>({
+    resolver: zodResolver(updatePetSchema),
+  });
 
   const {
     handleSubmit,
     control,
     reset,
     formState: { errors },
-  } = useForm<UpdatePetForm>({
-    resolver: zodResolver(updatePetSchema),
-  });
+  } = form;
 
   useEffect(() => {
     if (data) {
@@ -39,7 +52,7 @@ export const UpdatePetPage = () => {
         birthDate: data.birthDate || undefined,
         color: data.color || undefined,
         feeding: data.feeding || undefined,
-        neutered: data.neutered ? 'yes' : 'no',
+        neutered: data.neutered,
         notes: data.notes || undefined,
         profileImageUrl: data.profileImageUrl || null,
       });
@@ -49,14 +62,21 @@ export const UpdatePetPage = () => {
   const { mutateAsync } = useUpdatePetByID(petId || '');
 
   const onSubmit = async (formData: UpdatePetForm) => {
-    await mutateAsync({
+    const isValid = await mutateAsync({
       petId: petId || '',
-      pet: transformUpdatePetData(formData),
+      pet: formData,
     });
 
-    toast.success('Se actualizó correctamente la mascota', {
-      position: 'top-center',
-    });
+    if (isValid) {
+      toast.success('Se actualizó correctamente la mascota', {
+        position: 'top-center',
+        duration: 3000,
+      });
+      navigate('/');
+      return;
+    }
+
+    toast.error('No se pudo actualizar la mascota');
   };
 
   return (
@@ -68,330 +88,185 @@ export const UpdatePetPage = () => {
         titleClass='font-normal text-xl mt-6'
       />
 
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-7.5'>
-        {/* name pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.name
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>Nombre</legend>
-            <Controller
-              name='name'
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='text'
-                  placeholder='Ramen'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.name && (
-            <span className='text-red-500 text-sm'>{errors.name.message}</span>
-          )}
-        </div>
+      <Form {...form}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='flex flex-col gap-7.5'
+        >
+          {/* name pet */}
+          <CustomTextField
+            control={control}
+            name='name'
+            label='Nombre'
+            placeholder='Ramen'
+          />
 
-        {/* species pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.species
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>Especie</legend>
-            <Controller
-              control={control}
-              name='species'
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='text'
-                  placeholder='Perro'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.species && (
-            <span className='text-red-500 text-sm'>
-              {errors.species.message}
-            </span>
-          )}
-        </div>
+          {/* species pet */}
+          <CustomTextField
+            control={control}
+            name='species'
+            label='Especie'
+            placeholder='Perro'
+          />
 
-        {/* breed pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.breed
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>Raza</legend>
-            <Controller
-              control={control}
-              name='breed'
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='text'
-                  placeholder='Boyero de Berna'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.breed && (
-            <span className='text-red-500 text-sm'>{errors.breed.message}</span>
-          )}
-        </div>
+          {/* breed pet */}
+          <CustomTextField
+            control={control}
+            name='breed'
+            label='Raza'
+            placeholder='Boyero de Berna'
+          />
 
-        {/* gender pet */}
-        <Controller
-          name='gender'
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <>
-              <div className='flex justify-between gap-12'>
-                <CustomButton
-                  type='button'
-                  onClick={() => onChange('HEMBRA')}
-                  className={
-                    value === 'HEMBRA'
-                      ? 'bg-transparent text-black border-2 border-primary'
-                      : 'text-black border-2 border-primary'
-                  }
-                >
-                  Hembra
-                </CustomButton>
-                <CustomButton
-                  type='button'
-                  onClick={() => onChange('MACHO')}
-                  className={
-                    value === 'MACHO'
-                      ? 'bg-transparent text-black border-2 border-primary'
-                      : 'text-black border-2 border-primary'
-                  }
-                >
-                  Macho
-                </CustomButton>
-              </div>
-              {errors.gender && (
-                <span className='text-red-500 text-sm'>
-                  {errors.gender.message}
-                </span>
-              )}
-            </>
-          )}
-        />
+          {/* gender pet */}
+          <Controller
+            name='gender'
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <div className='flex justify-between gap-12'>
+                  <CustomButton
+                    type='button'
+                    onClick={() => onChange('HEMBRA')}
+                    className={
+                      value === 'HEMBRA'
+                        ? 'bg-transparent text-black border-2 border-primary'
+                        : 'text-black border-2 border-primary'
+                    }
+                  >
+                    Hembra
+                  </CustomButton>
+                  <CustomButton
+                    type='button'
+                    onClick={() => onChange('MACHO')}
+                    className={
+                      value === 'MACHO'
+                        ? 'bg-transparent text-black border-2 border-primary'
+                        : 'text-black border-2 border-primary'
+                    }
+                  >
+                    Macho
+                  </CustomButton>
+                </div>
+                {errors.gender && (
+                  <span className='text-red-500 text-sm'>
+                    {errors.gender.message}
+                  </span>
+                )}
+              </>
+            )}
+          />
 
-        {/* date birthday pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.birthDate
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>
-              Fecha de nacimiento
-            </legend>
-            <Controller
-              name='birthDate'
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='date'
-                  placeholder='04/01/2020'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.birthDate && (
-            <span className='text-red-500 text-sm'>
-              {errors.birthDate.message}
-            </span>
-          )}
-        </div>
+          {/* date birthday pet */}
+          <CustomDatePicker
+            form={form}
+            label='Fecha de nacimiento'
+            name='birthDate'
+          />
 
-        {/* weight pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.weight
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>
-              Peso (kg)
-            </legend>
-            <Controller
-              name='weight'
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='number'
-                  step='0.1'
-                  placeholder='10'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                  onChange={(e) => {
-                    const value = e.target.valueAsNumber;
-                    field.onChange(isNaN(value) ? undefined : value);
-                  }}
-                />
-              )}
-            />
-          </fieldset>
-          {errors.weight && (
-            <span className='text-red-500 text-sm'>
-              {errors.weight.message}
-            </span>
-          )}
-        </div>
+          {/* weight pet */}
+          <CustomTextField
+            control={control}
+            name='weight'
+            label='Peso (kg)'
+            placeholder='10'
+            type='number'
+          />
 
-        {/* color pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.color
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>Color</legend>
-            <Controller
-              name='color'
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='text'
-                  placeholder='Tricolor'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.color && (
-            <span className='text-red-500 text-sm'>{errors.color.message}</span>
-          )}
-        </div>
+          {/* color pet */}
+          <CustomTextField
+            control={control}
+            name='color'
+            label='Color'
+            placeholder='Tricolor'
+          />
 
-        {/* feeding pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.feeding
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>
-              Alimentación
-            </legend>
-            <Controller
-              name='feeding'
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type='text'
-                  placeholder='Royal Canin'
-                  className='bg-transparent outline-none w-full h-10 px-4 pb-2 pt-1 text-xs'
-                />
-              )}
-            />
-          </fieldset>
-          {errors.feeding && (
-            <span className='text-red-500 text-sm'>
-              {errors.feeding.message}
-            </span>
-          )}
-        </div>
+          {/* feeding pet */}
+          <CustomTextField
+            control={control}
+            name='feeding'
+            label='Alimentación'
+            placeholder='Royal Canin'
+          />
 
-        {/* neutered pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.neutered
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>
-              Castrado
-            </legend>
-            <Controller
-              name='neutered'
-              control={control}
-              render={({ field: { value, onChange } }) => (
-                <select
-                  onChange={(e) => onChange(e.target.value)}
-                  value={value?.toString() ?? ''}
-                  className='bg-transparent outline-none w-24/25 h-10 px-4 pb-2 pt-1 text-xs'
-                >
-                  <option value='' disabled>
-                    Seleccione una opción
-                  </option>
-                  <option value='yes'>Sí</option>
-                  <option value='no'>No</option>
-                </select>
-              )}
-            />
-          </fieldset>
-          {errors.neutered && (
-            <span className='text-red-500 text-sm'>
-              {errors.neutered.message}
-            </span>
-          )}
-        </div>
+          <FormField
+            control={control}
+            name='neutered'
+            render={({ field }) => (
+              <FormItem className='space-y-3'>
+                <FormLabel>¿Está castrado?</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={(val) => {
+                      field.onChange(val === 'true');
+                    }}
+                    value={
+                      field.value === true
+                        ? 'true'
+                        : field.value === false
+                        ? 'false'
+                        : undefined
+                    }
+                    className='flex flex-row gap-4'
+                  >
+                    <FormItem className='flex items-center space-x-3 space-y-0'>
+                      <FormControl>
+                        <RadioGroupItem value='true' />
+                      </FormControl>
+                      <FormLabel className='font-normal cursor-pointer'>
+                        Sí
+                      </FormLabel>
+                    </FormItem>
 
-        {/* notes pet */}
-        <div>
-          <fieldset
-            className={`border-2 bg-white rounded-lg w-full transition-colors ${
-              errors.notes
-                ? 'border-red-500'
-                : 'border-primary focus-within:border-primary'
-            }`}
-          >
-            <legend className='ml-3 px-1 text-xs font-semibold'>
-              Añadir nota
-            </legend>
-            <Controller
-              name='notes'
-              control={control}
-              render={({ field }) => (
-                <textarea
-                  rows={5}
-                  maxLength={500}
-                  className='bg-transparent outline-none w-full px-4 pb-2 pt-1 text-xs resize-none'
-                  {...field}
-                />
-              )}
-            />
-          </fieldset>
-          {errors.notes && (
-            <span className='text-red-500 text-sm'>{errors.notes.message}</span>
-          )}
-        </div>
+                    <FormItem className='flex items-center space-x-3 space-y-0'>
+                      <FormControl>
+                        <RadioGroupItem value='false' />
+                      </FormControl>
+                      <FormLabel className='font-normal cursor-pointer'>
+                        No
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <CustomButton type='submit'>Actualizar mascota</CustomButton>
-      </form>
+          {/* notes pet */}
+          <div>
+            <fieldset
+              className={`border-2 bg-white rounded-lg w-full transition-colors ${
+                errors.notes
+                  ? 'border-red-500'
+                  : 'border-primary focus-within:border-primary'
+              }`}
+            >
+              <legend className='ml-3 px-1 text-xs font-semibold'>
+                Añadir nota
+              </legend>
+              <Controller
+                name='notes'
+                control={control}
+                render={({ field }) => (
+                  <textarea
+                    rows={5}
+                    maxLength={500}
+                    className='bg-transparent outline-none w-full px-4 pb-2 pt-1 text-xs resize-none'
+                    {...field}
+                  />
+                )}
+              />
+            </fieldset>
+            {errors.notes && (
+              <span className='text-red-500 text-sm'>
+                {errors.notes.message}
+              </span>
+            )}
+          </div>
+
+          <CustomButton type='submit'>Actualizar mascota</CustomButton>
+        </form>
+      </Form>
     </>
   );
 };

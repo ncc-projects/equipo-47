@@ -1,3 +1,5 @@
+import { CustomDatePicker } from '@/components/custom/CustomDatePicker';
+import { CustomSelectField } from '@/components/custom/CustomSelectField';
 import { Header } from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -7,25 +9,16 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/components/ui/form';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm, useWatch } from 'react-hook-form';
-import { useGetVaccinateTypes } from '../health/hooks/useGetVaccinateTypes';
-import { useGetPets } from '../home/hooks/useGetPets';
-import type { CreateVaccinateEvent } from './interfaces/create-vaccinate-event';
-import { createVaccinateEventSchema } from './schema/createVaccinateEventSchema';
-import { useCreateVaccinateEvent } from './hooks/useCreateVaccinateEvent';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
-import { CustomDatePicker } from '@/components/custom/CustomDatePicker';
+import { useGetVaccinateTypes } from '../health/hooks/useGetVaccinateTypes';
+import { useGetPets } from '../home/hooks/useGetPets';
+import { useCreateVaccinateEvent } from './hooks/useCreateVaccinateEvent';
+import type { CreateVaccinateEvent } from './interfaces/create-vaccinate-event';
+import { createVaccinateEventSchema } from './schema/createVaccinateEventSchema';
 
 const health = '/src/assets/pets/health.png';
 
@@ -76,60 +69,20 @@ export const CreateVaccinate = () => {
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
           {/* SELECTOR DE VACUNA */}
-          <FormField
-            control={form.control}
+          <CustomSelectField
+            control={control}
+            label='Tipo de Vacuna'
             name='vaccineTypeId'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Tipo de Vacuna</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  defaultValue={field.value?.toString()}
-                >
-                  <FormControl className='w-full border-primary focus-within:border-primary transition-colors border-2 h-11!'>
-                    <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Selecciona la vacuna' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {vaccineTypes.map((v) => (
-                      <SelectItem key={v.id} value={v.id.toString()}>
-                        {v.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            options={vaccineTypes.map((v) => ({ label: v.name, value: v.id }))}
+            placeholder='Selecciona la vacuna'
           />
           {/* SELECTOR DE MASCOTA */}
-          <FormField
-            control={form.control}
+          <CustomSelectField
+            control={control}
+            label='Mascota'
             name='petId'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mascota</FormLabel>
-                <Select
-                  onValueChange={(value) => field.onChange(Number(value))}
-                  defaultValue={field.value?.toString()}
-                >
-                  <FormControl className='w-full border-primary focus-within:border-primary transition-colors border-2 h-11!'>
-                    <SelectTrigger className='bg-white'>
-                      <SelectValue placeholder='Selecciona una mascota' />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {pets.map((pet) => (
-                      <SelectItem key={pet.id} value={pet.id.toString()}>
-                        {pet.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
+            options={pets.map((pet) => ({ label: pet.name, value: pet.id }))}
+            placeholder='Selecciona una mascota'
           />
 
           {/* FECHAS (Usando el componente reutilizable) */}
