@@ -1,13 +1,13 @@
 export interface Pet {
   id:              number;
-  name:            null | string;
-  species:         null | string;
-  breed:           null | string;
+  name:            string;
+  species:         string;
+  breed:           string;
   gender:          GenderPet;
-  birthDate:       string | null;
-  weight:          number | null;
+  birthDate:       string;
+  weight:          number;
   color:           null | string;
-  feeding:         null | string;
+  feeding:         string;
   neutered:        boolean;
   notes:           null | string;
   ownerId:         number;
