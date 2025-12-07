@@ -11,6 +11,8 @@ import { UpdatePetPage } from '@/pet-health-tracker/pages/pets/UpdatePetPage';
 import { ProfilePetPage } from '@/pet-health-tracker/pages/pets/ProfilePetPage';
 import { CreatePetPage } from '@/pet-health-tracker/pages/pets/CreatePetPage';
 import { CalendarPage } from '@/pet-health-tracker/pages/calendar/CalendarPage';
+import { HealthPage } from '@/pet-health-tracker/pages/health/HealthPage';
+import { CreateVaccinate } from '@/pet-health-tracker/pages/vaccinate/CreateVaccinate';
 
 const PetHealthTrackerLayout = lazy(
   () => import('../pet-health-tracker/layouts/PetHealthTrackerLayout')
@@ -45,6 +47,14 @@ export const appRouter = createBrowserRouter([
       {
         path: 'pets/calendar',
         element: <CalendarPage />,
+      },
+      {
+        path: 'pets/salud',
+        element: <HealthPage />,
+      },
+      {
+        path: 'pets/salud/nueva-vacuna',
+        element: <CreateVaccinate />,
       },
     ],
   },
