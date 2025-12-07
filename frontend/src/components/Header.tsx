@@ -2,7 +2,7 @@ import type { JSX } from 'react';
 
 interface Props {
   img: string;
-  imgClass: string;
+  imgClass?: string;
   icon?: JSX.Element;
   iconClass?: string;
   title?: string;
