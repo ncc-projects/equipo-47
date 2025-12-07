@@ -23,7 +23,7 @@ export const createPetSchema = z.object({
   feeding: z
     .string({ error: 'Escriba la alimentación de su mascota' })
     .min(3, { error: 'Escriba al menos 3 caracteres' }),
-  neutered: z.enum(['yes', 'no'], {
+  neutered: z.boolean({
     error: 'Seleccione si la mascota está castrada',
   }),
   notes: z.string().optional(),
