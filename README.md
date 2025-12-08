@@ -1,4 +1,6 @@
 ## <p align="center"> Pet Health Tracker </p>
+<img width="1727" height="966" alt="image" src="https://github.com/user-attachments/assets/3479b3b9-a05d-42b2-aa97-a28de31c72b5" />
+
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)<br>
 Pet Health Tracker es un sistema web diseñado para gestionar de manera integral la salud de mascotas, permitiendo administrar perfiles, historial médico, alimentación y recordatorios automáticos. El proyecto está construido con un enfoque escalable, seguro y mantenible.
 
@@ -23,7 +25,8 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
 - Endpoints:
   - `POST /api/v1/login`
   - `POST /api/v1/users/register`
-  - `POST /api/v1/users/forgot-password`
+  - `POST /api/v1/users/request-password-renewal`
+  - `POST /api/v1/users/renew-password`
 
 ### 2. Gestión de Mascotas
 - CRUD completo  
@@ -40,20 +43,14 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
 - Endpoints:
   - `POST /api/v1/vaccination-events`
 
-### 4. Seguimiento Nutricional TODO
-- Registro de comidas  
-- Recordatorios configurables  
-- Endpoints:
-  - `POST /pets/:id/meal`   
-  - `POST /pets/:id/meal/reminders` 
-
-### 5. Recordatorios Automáticos  TODO
-- Cron jobs o Cloud Functions  
+### 4. Recordatorios Automáticos
+- Recordatorios por usuario  
 - Alertas por email o notificaciones internas  
 - Endpoint:
-  - `GET /reminders/upcoming`
+  - `GET /api/v1/vaccination-events`
+  - `GET /api/v1/vaccination-events/:petId/reminders`
 
-### 6. Dashboard  TODO
+### 5. Dashboard
 - Agregación de datos  
 - Indicadores clave:
   - Próximas vacunas  
@@ -117,6 +114,7 @@ Swagger está configurado para generar documentación de la API automáticamente
 http://localhost:8080/swagger-ui/index.html
 ```
 
+<img width="1898" height="944" alt="image" src="https://github.com/user-attachments/assets/7164ef24-b08f-4bad-81d8-fb76af773a09" />
 
 
 
@@ -162,7 +160,7 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
         
 
 ## Modelo Entidad Relación
-
+![Image](https://github.com/user-attachments/assets/d2835311-6580-4c8c-9546-f5168985fb99)
 
 </br>
 
