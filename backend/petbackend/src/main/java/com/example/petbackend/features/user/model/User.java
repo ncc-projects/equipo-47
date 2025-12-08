@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -31,6 +32,14 @@ public class User implements UserDetails {
     @Setter
     @Column(name = "full_name")
     private String fullName;
+
+    @Getter @Setter
+    @Column(name = "verification_code")
+    private String verificationCode;
+
+    @Getter @Setter
+    @Column(name = "verification_expiration")
+    private LocalDateTime verificationCodeExpiresAt;
 
     private String email;
     private String password;
