@@ -1,6 +1,9 @@
 package com.example.petbackend.features.user.controller;
 
+import com.example.petbackend.config.responses.ApiResponseSimple;
 import com.example.petbackend.config.responses.DataResponse;
+import com.example.petbackend.features.auth.dto.RenewPasswordRequestDTO;
+import com.example.petbackend.features.auth.service.password.IPasswordService;
 import com.example.petbackend.features.user.dto.RegisteredUserResponseDTO;
 import com.example.petbackend.features.user.dto.UserRegisterRequestDTO;
 import com.example.petbackend.features.user.model.User;
@@ -10,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +26,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final IPasswordService passwordService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, IPasswordService passwordService) {
         this.userService = userService;
+        this.passwordService = passwordService;
     }
 
     @Operation(
@@ -61,5 +67,33 @@ public class UserController {
     @GetMapping("check-status")
     public RegisteredUserResponseDTO checkStatus(@AuthenticationPrincipal User currentUser) {
         return userService.checkStatus(currentUser.getId());
+    }
+
+    @Operation(
+            summary = "Solicitar la renovación de contraseña, solo con correo",
+            description = "El usuario solo recuerda su correo y necesita generar otra contraseña, el usuario previamente ya se encuentra registrado",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Correo enviado con la url para renovar la contraseña"),
+                    @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            }
+    )
+    @PostMapping("request-password-renewal")
+    public ResponseEntity<ApiResponseSimple> requestPasswordRenewal(@RequestParam String email) throws MessagingException {
+        passwordService.requestPasswordRenewal(email);
+        return ResponseEntity.ok(new ApiResponseSimple("Correo enviado", HttpStatus.OK.value()));
+    }
+
+    @Operation(
+            summary = "Renovar contraseña",
+            description = "El cliente indica el token y la nueva contraseña para su renovación, el usuario previamente ya se encuentra registrado",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Constraseña renovada"),
+                    @ApiResponse(responseCode = "400", description = "Datos inválidos", content = @Content),
+            }
+    )
+    @PostMapping("renew-password")
+    public ResponseEntity<ApiResponseSimple> renewPassword(@RequestBody @Valid RenewPasswordRequestDTO dto) {
+        passwordService.renewPassword(dto);
+        return ResponseEntity.ok(new ApiResponseSimple("Contraseña renovada con éxito", HttpStatus.OK.value()));
     }
 }
