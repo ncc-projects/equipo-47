@@ -13,6 +13,11 @@ public record RenewPasswordRequestDTO(
         @Schema(description = "Nueva contraseña del usuario", example = "12345678A")
         @Size(min = 8, message = "La contraseña debe tener como mínimo 8 caracteres")
         @NotBlank
-        String newPassword
+        String newPassword,
+
+        @Schema(description = "Confirma la nueva contraseña", example = "12345678A")
+        @Size(min = 8, message = "La contraseña debe tener como mínimo 8 caracteres")
+        @NotBlank
+        String confirmNewPassword
 ) {
 }

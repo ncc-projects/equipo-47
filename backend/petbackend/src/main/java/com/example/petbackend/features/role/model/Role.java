@@ -3,6 +3,7 @@ package com.example.petbackend.features.role.model;
 import com.example.petbackend.features.user.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "roles")
 @Entity(name = "Role")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Role {

@@ -47,6 +47,11 @@ public class PasswordService implements IPasswordService {
     @Transactional
     @Override
     public void renewPassword(RenewPasswordRequestDTO dto) {
+
+        if (!dto.newPassword().equals(dto.confirmNewPassword())) {
+            throw new BadRequestException("Las contraseñas deben ser iguales");
+        }
+
         User user = userRepository.findByVerificationCode(dto.token())
                 .orElseThrow(() -> new NotFoundException("Token inválido"));
 
