@@ -1,11 +1,10 @@
 import { petAPI } from '@/api/petApi';
-import type { VaccinationEvents } from '../interfaces/vaccination-events.interface';
+import type { VaccinationEventsResponse } from '../interfaces/vaccination-events.response';
 
-export const getVaccinateEventsAction = async (
-  petId: number
-): Promise<VaccinationEvents[]> => {
-  const { data } = await petAPI.get<VaccinationEvents[]>(
-    `/vaccination-events/${petId}/reminders`
-  );
-  return data;
-};
+export const getVaccinateEventsAction =
+  async (): Promise<VaccinationEventsResponse[]> => {
+    const { data } = await petAPI.get<VaccinationEventsResponse[]>(
+      '/vaccination-events'
+    );
+    return data;
+  };

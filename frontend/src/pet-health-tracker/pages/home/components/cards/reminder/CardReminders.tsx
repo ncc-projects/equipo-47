@@ -1,10 +1,10 @@
 import Cat from '@/assets/pets/cat.png';
 import { CardReminder } from './CardReminder';
-import type { VaccinationEvents } from '../../../interfaces/vaccination-events.interface';
 import { getDaysUntil } from '@/utils/getDaysUntil';
+import type { VaccineEvents } from '../../../interfaces/vaccination-events.interface';
 
 interface Props {
-  vaccinateEvents: VaccinationEvents[];
+  vaccinateEvents: VaccineEvents[];
 }
 
 export const CardReminders = ({ vaccinateEvents }: Props) => {
@@ -17,9 +17,9 @@ export const CardReminders = ({ vaccinateEvents }: Props) => {
           <CardReminder
             key={vaccinate.id}
             img={Cat}
-            name='Chihiro'
+            name={vaccinate.pet?.name || 'Mascota'}
             vaccination={getDaysUntil(vaccinate.scheduledDate) || 0}
-            deworming='Próxima desparasitación en 23 días'
+            // deworming='Próxima desparasitación en 23 días'
           />
         ))}
       </div>

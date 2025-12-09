@@ -1,7 +1,7 @@
 interface Props {
   img: string;
   name: string;
-  deworming: string;
+  deworming?: string;
   vaccination: number;
 }
 
@@ -13,7 +13,9 @@ export const CardReminder = ({ deworming, img, name, vaccination }: Props) => {
         <h4 className='font-medium text-white'>{name}</h4>
       </div>
       <div className='flex flex-col gap-1 text-xs'>
-        <p className='bg-footer px-1 py-0.5 rounded-sm'>{deworming}</p>
+        {deworming && (
+          <p className='bg-footer px-1 py-0.5 rounded-sm'>{deworming}</p>
+        )}
         {vaccination !== 0 && (
           <p className='bg-footer px-1 py-0.5 rounded-sm'>
             Próxima vacunación en {vaccination} días

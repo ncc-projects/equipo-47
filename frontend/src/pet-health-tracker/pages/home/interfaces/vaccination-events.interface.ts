@@ -1,6 +1,8 @@
-export interface VaccinationEvents {
+import type { Pet } from "./pets.interface";
+
+export interface VaccineEvents {
   id:             number;
-  petId:          number;
+  pet:            Pet | null;
   vaccineType:    VaccineType;
   eventType:      string;
   scheduledDate:  string;
