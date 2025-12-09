@@ -12,27 +12,24 @@ import { useEffect } from 'react';
 export const HomePage = () => {
   const user = useAuthStore((state) => state.user);
 
-  // 1. Obtenemos la función para guardar en el store
   const setEvents = useVaccineStore((state) => state.setEvents);
+  const vaccineEvents = useVaccineStore((state) => state.events);
 
   const { data: pets = [], isLoading } = useGetPets();
-  const petsId = pets.map((pet) => pet.id);
 
-  const { data: vaccinateEvents = [] } = useGetVaccinateEvents(petsId);
+  const { data: vaccinateResponse = [] } = useGetVaccinateEvents();
 
-  // 2. EFECTO DE SINCRONIZACIÓN
-  // Cuando la API responda con datos, los guardamos en el store global.
   useEffect(() => {
-    if (vaccinateEvents.length > 0) {
-      setEvents(vaccinateEvents);
+    if (vaccinateResponse.length > 0) {
+      setEvents(vaccinateResponse);
     }
-  }, [vaccinateEvents, setEvents]);
+  }, [vaccinateResponse, setEvents]);
 
   return (
     <div className='gap-4 flex flex-col'>
       <CardProfile name={user?.fullName || ''} />
       {isLoading ? <PetSkeleton /> : <CardPets pets={pets} />}
-      <CardReminders vaccinateEvents={vaccinateEvents} />
+      <CardReminders vaccinateEvents={vaccineEvents} />
       <CardServices />
     </div>
   );
