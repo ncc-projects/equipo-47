@@ -22,17 +22,15 @@ export const useVaccineStore = create<VaccineState>((set, get) => ({
     set({
       eventsByPet,
 
-      // Flatten
       events: eventsByPet.flatMap((item) =>
         item.vaccineEvents.map((event) => ({
           ...event,
-          pet: item.pet, // Le agregamos la mascota al evento plano
+          pet: item.pet,
         }))
       ),
     }),
 
   getEventsByPetId: (petId: number) => {
-    // Usamos get() para leer el estado actual dentro de la función
     const petData = get().eventsByPet.find((item) => item.pet.id === petId);
     return petData ? petData.vaccineEvents : [];
   },

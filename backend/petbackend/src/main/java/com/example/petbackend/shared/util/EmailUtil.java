@@ -11,7 +11,7 @@ public class EmailUtil {
                 "box-shadow:0 2px 8px rgba(0,0,0,0.1);\">" +
 
                 "<tr>" +
-                "<td style=\"background:#4A4B4B; padding:20px; text-align:center; color:#FFFFFF;\">" +
+                "<td style=\"background:#000; padding:20px; text-align:center; color:#FFFFFF;\">" +
                 "<h1 style=\"margin:0; font-size:24px;\">Renovar tu Contraseña</h1>" +
                 "</td>" +
                 "</tr>" +
@@ -27,7 +27,7 @@ public class EmailUtil {
 
                 "<div style=\"text-align:center; margin:30px 0;\">" +
                 "<a href=\"" + resetLink + "\" " +
-                "style=\"display:inline-block; background:#3E3E3E; color:#FFFFFF; " +
+                "style=\"display:inline-block; background:#000; color:#FFFFFF; " +
                 "padding:14px 28px; font-size:16px; font-weight:bold; " +
                 "text-decoration:none; border-radius:6px;\">" +
                 "Renovar Contraseña" +
