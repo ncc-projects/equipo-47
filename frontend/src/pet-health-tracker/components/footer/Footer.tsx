@@ -5,8 +5,11 @@ import heartIcon from '@/assets/icons/heart.png';
 import calendarIcon from '@/assets/icons/calendar.png';
 import personIcon from '@/assets/icons/person.png';
 import petIcon from '@/assets/icons/pet.png';
+import { useAuthStore } from '@/auth/store/auth.store';
 
 export const Footer = () => {
+  const logout = useAuthStore((state) => state.logout);
+
   return (
     <footer className='fixed bottom-0 left-0 w-full h-20 bg-footer border-t-3 border-[#515C5E] shadow-lg z-50'>
       <nav className='h-full w-full max-w-md mx-auto *:cursor-pointer'>
@@ -42,13 +45,13 @@ export const Footer = () => {
           </li>
 
           <li className='flex justify-center'>
-            <Link to='/profile'>
+            <button onClick={logout}>
               <img
                 src={personIcon}
                 alt='Perfil'
                 className='h-12 w-12 object-contain hover:scale-110 transition-transform'
               />
-            </Link>
+            </button>
           </li>
 
           <li className='flex justify-center'>

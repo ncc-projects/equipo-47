@@ -16,7 +16,7 @@ export const CardReminders = ({ vaccinateEvents }: Props) => {
         {vaccinateEvents.map((vaccinate) => (
           <CardReminder
             key={vaccinate.id}
-            img={Cat}
+            img={vaccinate.pet?.profileImageUrl || Cat}
             name={vaccinate.pet?.name || 'Mascota'}
             vaccination={getDaysUntil(vaccinate.scheduledDate) || 0}
             // deworming='Próxima desparasitación en 23 días'
