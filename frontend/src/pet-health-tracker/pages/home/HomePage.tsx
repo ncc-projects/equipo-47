@@ -14,12 +14,12 @@ export const HomePage = () => {
 
   const { data: vaccinateResponse = [] } = useGetVaccinateEvents();
 
-  const vaccineEvents = vaccinateResponse.flatMap((entry) =>
-    entry.vaccineEvents.map((event) => ({
+  const vaccineEvents = vaccinateResponse.flatMap((entry) => {
+    return entry.vaccineEvents.map((event) => ({
       ...event,
       pet: entry.pet,
-    }))
-  );
+    }));
+  });
 
   return (
     <div className='gap-4 flex flex-col'>

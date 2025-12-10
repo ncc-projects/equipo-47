@@ -6,6 +6,13 @@ interface Props {
 }
 
 export const CardReminder = ({ deworming, img, name, vaccination }: Props) => {
+  let vaccinationText = '';
+
+  if (vaccination === 0) vaccinationText = 'Próxima vacunación hoy';
+  else if (vaccination === 1) vaccinationText = 'Próxima vacunación mañana';
+  else if (vaccination < 0) vaccinationText = 'Su vacunación ya pasó';
+  else vaccinationText = `Próxima vacunación en ${vaccination} días`;
+
   return (
     <div className='bg-primary flex justify-between items-center gap-1 p-2 rounded-lg'>
       <div className='flex justify-center items-center py-2 gap-1'>
@@ -16,11 +23,8 @@ export const CardReminder = ({ deworming, img, name, vaccination }: Props) => {
         {deworming && (
           <p className='bg-footer px-1 py-0.5 rounded-sm'>{deworming}</p>
         )}
-        {vaccination !== 0 && (
-          <p className='bg-footer px-1 py-0.5 rounded-sm'>
-            Próxima vacunación en {vaccination} días
-          </p>
-        )}
+
+        <p className='bg-footer px-1 py-0.5 rounded-sm'>{vaccinationText}</p>
       </div>
     </div>
   );
