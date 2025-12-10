@@ -73,7 +73,7 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
   1. Clona el repositorio
      
      ```bash
-     git clone https://github.com/S11-25-Equipo-47-WebApp/equipo-47.git
+     git clone https://github.com/ncc-projects/equipo-47.git
      cd equipo-47
   2. Configura las variables de entorno para la conexión a la base de datos desde `application-prod.yml`
 
@@ -166,7 +166,6 @@ Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE
 </br></br>
 
 > [!IMPORTANT]
-> * Con sql crea los roles: ADMIN y OWNER en la tabla roles
 > * Agrega la configuración de la bd en `application-prod.yml`
          
 
