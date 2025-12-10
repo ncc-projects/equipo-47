@@ -141,8 +141,10 @@ export const LoginPage = () => {
               >
                 Iniciar Sesión
               </button>
-              <span className='text-xl text-center'>
-                Olvidaste tu contraseña?
+              <span className='text-xl text-center underline'>
+                <Link to='/auth/request-password-reset'>
+                  Olvidaste tu contraseña?
+                </Link>
               </span>
             </section>
           </div>
