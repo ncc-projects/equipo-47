@@ -1,6 +1,7 @@
 package com.example.petbackend.features.vaccineevent.dto;
 
 import com.example.petbackend.features.pet.dto.PetResponseDTO;
+import com.example.petbackend.features.pet.dto.PetResponseDTOO;
 import com.example.petbackend.features.vaccineevent.model.EVaccineEventType;
 import com.example.petbackend.features.vaccineevent.model.VaccineEvent;
 import com.example.petbackend.features.vaccinetype.dto.VaccineTypeResponseDTO;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 public record VaccineEventResponseDTO(
         Long id,
-        PetResponseDTO pet,
+        PetResponseDTOO pet,
         VaccineTypeResponseDTO vaccineType,
         EVaccineEventType eventType,
         LocalDate scheduledDate,
@@ -22,7 +23,7 @@ public record VaccineEventResponseDTO(
         String traceId,
         boolean enabled
 ) {
-    public VaccineEventResponseDTO(VaccineEvent vaccineEvent, PetResponseDTO pet) {
+    public VaccineEventResponseDTO(VaccineEvent vaccineEvent, PetResponseDTOO pet) {
         this(
                 vaccineEvent.getId(),
                 pet,

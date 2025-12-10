@@ -4,6 +4,7 @@ import com.example.petbackend.config.exceptions.BadRequestException;
 import com.example.petbackend.features.pet.dto.ImageResponseDTO;
 import com.example.petbackend.features.pet.dto.PetRequestDTO;
 import com.example.petbackend.features.pet.dto.PetResponseDTO;
+import com.example.petbackend.features.pet.dto.PetResponseDTOO;
 import com.example.petbackend.features.pet.service.Impl.PetServiceImpl;
 import com.example.petbackend.features.user.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,7 +39,7 @@ public class PetController {
 
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PetResponseDTO> createPet(
+    public ResponseEntity<PetResponseDTOO> createPet(
             @RequestParam("pet") String petJson,
             @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
             @AuthenticationPrincipal User currentUser
@@ -61,28 +62,28 @@ public class PetController {
 
         PetRequestDTO petDTO = mapper.readValue(petJson, PetRequestDTO.class);
 
-        PetResponseDTO createdPet = petService.createPet(petDTO, profileImage, currentUser);
+        PetResponseDTOO createdPet = petService.createPet(petDTO, profileImage, currentUser);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPet);
     }
 
     @GetMapping
-    public ResponseEntity<List<PetResponseDTO>> getPets(@AuthenticationPrincipal User currentUser) {
-        List<PetResponseDTO> pets = petService.getAllPetsByOwner(currentUser);
+    public ResponseEntity<List<PetResponseDTOO>> getPets(@AuthenticationPrincipal User currentUser) {
+        List<PetResponseDTOO> pets = petService.getAllPetsByOwner(currentUser);
         return ResponseEntity.ok(pets);
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<PetResponseDTO> getPet(
+    public ResponseEntity<PetResponseDTOO> getPet(
             @PathVariable Long id,
             @AuthenticationPrincipal User currentUser
     ) {
-        PetResponseDTO pet = petService.getPetById(id, currentUser);
+        PetResponseDTOO pet = petService.getPetById(id, currentUser);
         return ResponseEntity.ok(pet);
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PetResponseDTO> updatePet(
+    public ResponseEntity<PetResponseDTOO> updatePet(
             @PathVariable Long id,
             @RequestParam("pet") String petJson,
             @RequestParam(value = "profileImage", required = false) MultipartFile profileImage,
@@ -93,8 +94,8 @@ public class PetController {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
         PetRequestDTO petDTO = mapper.readValue(petJson, PetRequestDTO.class);
-        PetResponseDTO updatedPet = petService.updatePet(id, petDTO, profileImage, currentUser);
-        log.info("Pet actualizado: {}", updatedPet.getName());
+        PetResponseDTOO updatedPet = petService.updatePet(id, petDTO, profileImage, currentUser);
+//        log.info("Pet actualizado: {}", updatedPet.getName());
 
         return ResponseEntity.ok(updatedPet);
     }

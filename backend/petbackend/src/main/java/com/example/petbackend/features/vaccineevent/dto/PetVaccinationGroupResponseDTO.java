@@ -1,11 +1,11 @@
 package com.example.petbackend.features.vaccineevent.dto;
 
-import com.example.petbackend.features.pet.dto.PetResponseDTO;
+import com.example.petbackend.features.pet.dto.PetResponseDTOO;
 
 import java.util.List;
 
 public record PetVaccinationGroupResponseDTO(
-        PetResponseDTO pet,
+        PetResponseDTOO pet,
         List<VaccineEventResponseDTO> vaccineEvents
 ) {
 }

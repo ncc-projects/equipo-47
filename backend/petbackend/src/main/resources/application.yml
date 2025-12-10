@@ -20,7 +20,7 @@ spring:
     active:   ${SPRING_PROFILES_ACTIVE:prod}
 frontend:
   reset-password:
-    url: urlfront
+    url: http://localhost:5173/auth/reset-password
 # Actuator Configuration
 management:
   endpoints:
