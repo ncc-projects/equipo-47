@@ -19,7 +19,7 @@ export const CardReminder = ({
       style={{ backgroundColor: theme.cardBg }}
     >
       {/* Contenedor de la Imagen */}
-      <div className='bg-white p-0.5 rounded-full w-12 h-12 flex items-center justify-center shrink-0 border-2 border-[#4B4B4B] overflow-hidden'>
+      <div className='bg-white p-0.5 rounded-full w-14 h-14 flex items-center justify-center shrink-0 border-2 border-[#4B4B4B] overflow-hidden'>
         <img
           src={petImage || Dog}
           alt={petName}
