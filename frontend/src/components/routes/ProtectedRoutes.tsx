@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/auth/store/auth.store';
 import type { PropsWithChildren } from 'react';
-import { Navigate } from 'react-router';
+import { Navigate, useSearchParams } from 'react-router';
 
 export const AuthenticatedRoute = ({ children }: PropsWithChildren) => {
   const { authStatus } = useAuthStore();
@@ -32,6 +32,18 @@ export const OwnerRoute = ({ children }: PropsWithChildren) => {
   if (authStatus === 'checking') return null;
   if (authStatus === 'not-authenticated') return <Navigate to='/auth/login' />;
   if (!isOwner()) return <Navigate to='/' />;
+
+  return children;
+};
+
+export const ResetPasswordRoute = ({ children }: PropsWithChildren) => {
+  const { authStatus } = useAuthStore();
+  const [params] = useSearchParams();
+  const token = params.get('token');
+
+  if (!token) return <Navigate to='/' replace />;
+
+  if (authStatus === 'authenticated') return <Navigate to='/' replace />;
 
   return children;
 };
