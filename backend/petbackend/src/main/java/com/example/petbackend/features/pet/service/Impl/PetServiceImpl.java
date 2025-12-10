@@ -6,6 +6,7 @@ import com.example.petbackend.config.exceptions.UnauthorizedException;
 import com.example.petbackend.features.pet.dto.ImageResponseDTO;
 import com.example.petbackend.features.pet.dto.PetRequestDTO;
 import com.example.petbackend.features.pet.dto.PetResponseDTO;
+import com.example.petbackend.features.pet.dto.PetResponseDTOO;
 import com.example.petbackend.features.pet.model.Pet;
 import com.example.petbackend.features.pet.repository.PetRepository;
 import com.example.petbackend.features.pet.service.CloudinaryService;
@@ -32,7 +33,7 @@ public class PetServiceImpl implements PetService {
 
     @Transactional
     @Override
-    public PetResponseDTO createPet(PetRequestDTO dto, MultipartFile profileImage, User owner) {
+    public PetResponseDTOO createPet(PetRequestDTO dto, MultipartFile profileImage, User owner) {
 
         Pet pet = petMapper.toEntity(dto);
         pet.setOwner(owner);
@@ -46,12 +47,12 @@ public class PetServiceImpl implements PetService {
 
         petRepository.save(savedPet);
 
-        return petMapper.toResponse(savedPet);
+        return new PetResponseDTOO(savedPet);
     }
 
     @Transactional
     @Override
-    public PetResponseDTO updatePet(Long id, PetRequestDTO dto, MultipartFile profileImage, User owner) {
+    public PetResponseDTOO updatePet(Long id, PetRequestDTO dto, MultipartFile profileImage, User owner) {
 
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Mascota no encontrada con id: " + id));
@@ -68,10 +69,10 @@ public class PetServiceImpl implements PetService {
 
         Pet updated = petRepository.save(pet);
 
-        return petMapper.toResponse(updated);
+        return new PetResponseDTOO(updated);
     }
     @Override
-    public PetResponseDTO getPetById(Long id, User owner) {
+    public PetResponseDTOO getPetById(Long id, User owner) {
         log.info("Fetching pet id={} for userId={}", id, owner.getId());
         Pet pet = petRepository.findById(id)
                 .orElseThrow(() -> {
@@ -83,16 +84,16 @@ public class PetServiceImpl implements PetService {
             throw new UnauthorizedException("No estás autorizado a ver esta mascota.");
         }
         log.info("Pet id={} fetched successfully", id);
-        return petMapper.toResponse(pet);
+        return new PetResponseDTOO(pet);
     }
 
     @Override
-    public List<PetResponseDTO> getAllPetsByOwner(User owner) {
+    public List<PetResponseDTOO> getAllPetsByOwner(User owner) {
         log.info("Fetching all pets for userId={}", owner.getId());
         List<Pet> pets = petRepository.findByOwner(owner);
         log.info("Found {} pets for userId={}", pets.size(), owner.getId());
         return pets.stream()
-                .map(petMapper::toResponse)
+                .map(PetResponseDTOO::new)
                 .toList();
     }
 

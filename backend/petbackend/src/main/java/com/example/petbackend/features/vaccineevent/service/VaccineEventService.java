@@ -3,8 +3,7 @@ package com.example.petbackend.features.vaccineevent.service;
 import com.example.petbackend.config.exceptions.BadRequestException;
 import com.example.petbackend.config.exceptions.NotFoundException;
 import com.example.petbackend.config.exceptions.PetOwnerMismatchException;
-import com.example.petbackend.features.pet.dto.PetResponseDTO;
-import com.example.petbackend.features.pet.mapper.PetMapper;
+import com.example.petbackend.features.pet.dto.PetResponseDTOO;
 import com.example.petbackend.features.pet.model.Pet;
 import com.example.petbackend.features.pet.repository.PetRepository;
 import com.example.petbackend.features.vaccineevent.dto.PetVaccinationGroupResponseDTO;
@@ -32,7 +31,6 @@ public class VaccineEventService implements IVaccineEventService {
     private final IVaccineEventRepository vaccineEventRepository;
     private final IVaccineTypeRepository vaccineTypeRepository;
     private final PetRepository petRepository;
-    private final PetMapper petMapper;
 
     @Override
     public VaccineEventResponseDTO createEvent(
@@ -50,7 +48,7 @@ public class VaccineEventService implements IVaccineEventService {
         VaccineType vaccineType = vaccineTypeRepository.findById(vEventRegisterDto.vaccineTypeId())
                 .orElseThrow(() -> new NotFoundException("El tipo de vacuna no existe"));
 
-        PetResponseDTO petResponseDTO = petMapper.toResponse(pet);
+        PetResponseDTOO petResponseDTO = new PetResponseDTOO(pet);
         String traceId = generateTraceId();
         VaccineEvent vaccineEvent = new VaccineEvent();
         vaccineEvent.setPet(pet);
@@ -147,7 +145,7 @@ public class VaccineEventService implements IVaccineEventService {
                             scheduledDate,
                             hasReminder
                     ).stream().map(vEvent ->
-                            new VaccineEventResponseDTO(vEvent, petMapper.toResponse(vEvent.getPet())))
+                            new VaccineEventResponseDTO(vEvent, new PetResponseDTOO(vEvent.getPet())))
                     .toList();
         }
 
@@ -157,7 +155,7 @@ public class VaccineEventService implements IVaccineEventService {
                         appliedDate,
                         hasReminder
                 ).stream().map(vEvent ->
-                        new VaccineEventResponseDTO(vEvent, petMapper.toResponse(vEvent.getPet())))
+                        new VaccineEventResponseDTO(vEvent, new PetResponseDTOO(vEvent.getPet())))
                 .toList();
     }
 
@@ -194,7 +192,7 @@ public class VaccineEventService implements IVaccineEventService {
 
         return grouped.entrySet().stream()
                 .map(entry -> new PetVaccinationGroupResponseDTO(
-                        petMapper.toResponse(entry.getKey()),
+                        new PetResponseDTOO(entry.getKey()),
                         entry.getValue().stream()
                                 .map(VaccineEventResponseDTO::new)
                                 .toList()
