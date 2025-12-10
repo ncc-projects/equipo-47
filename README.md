@@ -34,6 +34,7 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
 - Endpoints:
   - `POST /api/pets`
   - `GET /api/pets/:id`
+  - `GET /api/pets`
   - `PUT /api/pets/:id`
   - `DELETE /api/pets/:id`
 
@@ -133,7 +134,8 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
       src
       └── main
           ├── java/com/example/petbackend
-          │   ├── config       
+          │   ├── config
+          │   |   ├── datainitializer  -> load data.
           │   |   ├── exceptions       -> Exception handling.
           |   |   ├── responses        -> Response format.
           |   |   ├── security         -> Security settings.
@@ -144,15 +146,10 @@ Arquitectura basada en paquetes funcionales, se organizan  las carpetas de acuer
           |   |   ├── pet
           |   |   ├── role
           |   |   ├── user
-          |   |   ├── vaccineevent
-          |   |   ├── vaccinetype
-          |   |   ├── xx
-          |   |   ├── xx
-          |   |   ├── xx
-          |   |   ├── xx   
-          |   |   └── xx 
+          |   |   ├── vaccineevent 
+          |   |   └── vaccinetype 
           |   └── shared                     
-          │      ├── enums
+          │      ├── service
           |      ├── roleregistrationhandler        
           |      └── util             -> Reusable items.
           └── resources
