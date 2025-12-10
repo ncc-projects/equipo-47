@@ -3,7 +3,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Link, useNavigate, useSearchParams } from 'react-router';
 import { resetPasswordSchema } from '../schema/resetPasswordSchema';
 import { useResetPassword } from '@/auth/hooks/useResetPassword';
 import { Header } from '@/components/Header';
@@ -129,16 +129,22 @@ export const ResetPasswordForm = () => {
           <Button variant='primary' type='submit' disabled={isDisabled}>
             {isPending ? (
               <>
-                <Spinner /> Restableciendo...
+                <Spinner /> Guardando...
               </>
             ) : isSent ? (
-              'Restablecido'
+              'Guardado'
             ) : (
-              'Restablecer'
+              'Guardar nueva contraseña'
             )}
           </Button>
         </form>
       </Form>
+
+      <p className='text-xs text-muted-foreground text-center mt-2'>
+        <Link className='underline hover:text-foreground' to='/'>
+          Volver al inicio
+        </Link>
+      </p>
     </div>
   );
 };
