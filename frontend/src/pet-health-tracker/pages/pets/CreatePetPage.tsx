@@ -132,7 +132,7 @@ export const CreatePetPage = () => {
           <CustomTextField
             control={control}
             name='species'
-            label='Nombre'
+            label='Especie'
             placeholder='Especie'
           />
           {/* breed pet */}
