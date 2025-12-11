@@ -77,12 +77,12 @@ export const ProfilePetPage = () => {
           <li>
             Alimento:&nbsp;
             <span className='font-normal'>
-              {data?.breed || 'Royal Canin Adult'}
+              {data?.feeding || 'Royal Canin Adult'}
             </span>
           </li>
           <li>
             Ración diaria:&nbsp;
-            <span className='font-normal'>{data?.feeding || '300 gr.'}</span>
+            <span className='font-normal'>300 gr.</span>
           </li>
         </ul>
         <section className='flex gap-3 pl-3'>
