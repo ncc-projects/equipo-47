@@ -6,7 +6,7 @@ import {
   useQuery,
 } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useAuthStore } from './auth/store/auth.store';
 import { CustomFullScreenLoading } from './components/custom/CustomFullScreenLoading';
 import type { PropsWithChildren } from 'react';
@@ -35,7 +35,7 @@ export const App = () => {
         <RouterProvider router={appRouter} />
       </CheckAuthProvider>
       <Toaster richColors />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 };

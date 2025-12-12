@@ -8,6 +8,9 @@ import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { toast } from 'sonner';
+import { Spinner } from '@/components/ui/spinner';
+
+import pets from '@/assets/pets.png';
 
 export const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -28,6 +31,8 @@ export const LoginPage = () => {
 
   const onSubmit = async (formData: Login) => {
     setIsPosting(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
     const email = formData.email;
     const password = formData.password;
 
@@ -50,11 +55,7 @@ export const LoginPage = () => {
   return (
     <section className='w-full max-w-md flex flex-col justify-between h-[calc(100svh-48px)]'>
       <section className='gap-6 flex flex-col'>
-        <Header
-          img='/src/assets/pets.png'
-          title='Pet Health Tracker'
-          imgClass='w-52 h-52'
-        />
+        <Header img={pets} title='Pet Health Tracker' imgClass='w-52 h-52' />
         <section className='text-center'>
           <h4 className='text-3xl'>Inicia sesión</h4>
           <p className='text-xl px-10'>
@@ -136,10 +137,17 @@ export const LoginPage = () => {
             <section className='flex flex-col gap-3'>
               <button
                 type='submit'
-                className='bg-primary h-13 rounded-lg text-xl font-medium'
+                className='bg-primary h-13 rounded-lg text-xl font-medium disabled:bg-primary/90'
                 disabled={isPosting}
               >
-                Iniciar Sesión
+                {isPosting ? (
+                  <div className='flex justify-center gap-2 items-center text-gray-500'>
+                    <Spinner className='w-6 h-6' />
+                    Ingresando...
+                  </div>
+                ) : (
+                  'Iniciar Sesión'
+                )}
               </button>
               <span className='text-xl text-center underline'>
                 <Link to='/auth/request-password-reset'>

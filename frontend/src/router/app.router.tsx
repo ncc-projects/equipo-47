@@ -24,6 +24,7 @@ const PetHealthTrackerLayout = lazy(
 const AuthLayout = lazy(() => import('../auth/layouts/AuthLayout'));
 
 export const appRouter = createBrowserRouter([
+// export const appRouter = createHashRouter([
   {
     path: '/',
     element: (
