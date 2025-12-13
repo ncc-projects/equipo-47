@@ -103,11 +103,15 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
         secret: ${JWT_SECRET}  # Get from env vars
         expiration-ms: ${JWT_EXPIRATION_MS:86400000}
 
-  3. Crea un base de datos vacía con el nombre pet_db
+  3. Crea el archivo .env para el frontend
+     ```yaml
+     VITE_API_URL=http://localhost:8080/api/v1
+     
+  5. Crea un base de datos vacía con el nombre pet_db
   
-  4. Ejecuta el proyecto
+  6. Ejecuta el proyecto backend y frontend
 
-  5. La aplicación estará disponible en: http://localhost:8080
+  7. La aplicación backend estará disponible en: http://localhost:8080
 
 ## Swagger
 Swagger está configurado para generar documentación de la API automáticamente. Puedes acceder a la interfaz de Swagger en la siguiente URL cuando el servidor esté en funcionamiento:
