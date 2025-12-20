@@ -116,7 +116,7 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
      DB_PASS usatucontrasenia  
      CLOUDINARY_API_KEY  tuapikey
      CLOUDINARY_API_SECRET  tuapisecret
-     CLOUDINARY_NAME  dgtgmsqo7
+     CLOUDINARY_NAME  tuname
      SPRING_MAIL_USERNAME   tumail@gmail.com
      SPRING_MAIL_PASSWORD   tumailpassword
 
