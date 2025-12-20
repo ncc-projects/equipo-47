@@ -109,9 +109,20 @@ Pet Health Tracker es un sistema web diseñado para gestionar de manera integral
      
   5. Crea un base de datos vacía con el nombre pet_db
   
-  6. Ejecuta el proyecto backend y frontend
+  6. Variables de entorno para el backend
+     ```yaml
+     JWT_SECRET 123456789
+     DB_USER postgres
+     DB_PASS usatucontrasenia  
+     CLOUDINARY_API_KEY  tuapikey
+     CLOUDINARY_API_SECRET  tuapisecret
+     CLOUDINARY_NAME  dgtgmsqo7
+     SPRING_MAIL_USERNAME   tumail@gmail.com
+     SPRING_MAIL_PASSWORD   tumailpassword
 
-  7. La aplicación backend estará disponible en: http://localhost:8080
+  8. Ejecuta el proyecto backend y frontend
+
+  9. La aplicación backend estará disponible en: http://localhost:8080
 
 ## Swagger
 Swagger está configurado para generar documentación de la API automáticamente. Puedes acceder a la interfaz de Swagger en la siguiente URL cuando el servidor esté en funcionamiento:
